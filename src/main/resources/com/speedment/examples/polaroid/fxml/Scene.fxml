@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!--  fx:controller="com.speedment.examples.polaroid.SceneController" -->
+   <children>
+      <VBox fx:id="background" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+         <children>
+            <HBox fx:id="searchParent" alignment="CENTER" spacing="20.0" style="-fx-background-color: #444;">
+               <children>
+                  <Label text="Polaroid Social Network" textFill="#e0a66e">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow color="#00000040" height="4.0" offsetX="1.0" offsetY="1.0" radius="1.5" width="4.0" />
+                     </effect>
+                  </Label>
+                  <TextField fx:id="search" prefHeight="32.0" prefWidth="480.0" promptText="Find interesting users...">
+            </TextField>
+               </children>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </HBox>
+            <StackPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" VBox.vgrow="ALWAYS">
+               <effect>
+                  <InnerShadow color="#00000040" height="16.0" offsetY="2.0" radius="3.5" width="0.0" />
+               </effect>
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefViewportHeight="632.0" prefViewportWidth="980.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                     <content>
+                        <TilePane fx:id="tilepanel" hgap="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefTileHeight="240.0" prefTileWidth="320.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="12.0">
+                           <padding>
+                              <Insets bottom="24.0" left="64.0" right="64.0" top="24.0" />
+                           </padding>
+                        </TilePane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </StackPane>
+         </children>
+         <effect>
+            <GaussianBlur radius="3.0" />
+         </effect>
+      </VBox>
+      <Pane fx:id="foreground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.1);">
+         <effect>
+            <GaussianBlur radius="32.0" />
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
+   </children>
+</StackPane>

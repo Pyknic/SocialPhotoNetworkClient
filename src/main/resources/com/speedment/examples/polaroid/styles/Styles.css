@@ -1,0 +1,5 @@
+.button {}
+
+.button:hover {
+	-fx-effect: dropshadow(two-pass-box, rgba(0, 140, 255, 0.5), 8, 0.0, 0, 1);
+}
