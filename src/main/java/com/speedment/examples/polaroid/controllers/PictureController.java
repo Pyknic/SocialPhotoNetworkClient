@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -28,6 +27,11 @@ public class PictureController implements Initializable {
 	public PictureController(Client client) {
 		this.client = client;
 	}
+	
+	public void fromJSON(JSONImage img) {
+		picture.setImage(img.getImage());
+		title.textProperty().setValue(img.getTitle());
+	}
 
 	/**
 	 * Initializes the controller class.
@@ -36,9 +40,6 @@ public class PictureController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		final JSONImage image = client.getImage();
-		title.textProperty().setValue(image.getTitle());
-		profile.setImage(new Image(image.getSrc()));
-	}	
-	
+
+	}
 }

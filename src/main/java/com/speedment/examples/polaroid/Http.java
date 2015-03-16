@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.speedment.examples.polaroid;
 
 import java.io.BufferedReader;
@@ -73,7 +68,7 @@ public class Http {
 				response = new StringBuilder();
 				while ((line = rd.readLine()) != null) {
 					response.append(line);
-					response.append('\r');
+					response.append('\n');
 				}
 			}
 			return Optional.ofNullable(response.toString().trim());

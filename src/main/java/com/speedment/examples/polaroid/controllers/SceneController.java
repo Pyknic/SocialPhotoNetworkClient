@@ -1,7 +1,7 @@
 package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.Client;
-import com.speedment.examples.polaroid.LoginController;
+import com.speedment.examples.polaroid.JSONImage;
 import static com.speedment.examples.polaroid.MainApp.PATH;
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +50,6 @@ public class SceneController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		Platform.runLater(() -> {
 			searchParent.requestFocus();
-			System.out.println("Ping success: " + client.ping());
 		});
 	}
 	
@@ -71,7 +70,9 @@ public class SceneController implements Initializable {
 			
 			controller.onLogin(m -> {
 				popup.hide();
-				showImages();
+				client.browse().stream().forEachOrdered(img -> 
+					showImage(img)
+				);
 				foreground.setVisible(false);
 				background.setEffect(null);
 			});
@@ -127,12 +128,13 @@ public class SceneController implements Initializable {
 		}
 	}
 	
-	public void showImages() {
+	public void showImage(JSONImage img) {
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Picture.fxml"));
 			final PictureController controller = new PictureController(client);
 			loader.setController(controller);
 			final StackPane box = (StackPane) loader.load();
+			controller.fromJSON(img);
 			tilepanel.getChildren().add(box);
 			
 		} catch (IOException ex) {
