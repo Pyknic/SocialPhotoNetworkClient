@@ -19,8 +19,8 @@ public class PictureController implements Initializable {
 	
 	@FXML private ImageView picture;
 	@FXML private Label title;
-	@FXML private Button heart;
-	@FXML private ImageView profile;
+	//@FXML private Button heart;
+	//@FXML private ImageView profile;
 	
 	private final Client client;
 	

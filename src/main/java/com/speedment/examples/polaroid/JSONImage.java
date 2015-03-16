@@ -63,8 +63,8 @@ public class JSONImage {
 			img.title		= obj.get("title").toString();
 			img.description = obj.get("description").toString();
 			img.uploaded	= LocalDateTime.parse(obj.get("uploaded").toString());
-			img.uploadedBy  = JSONUser.parse((JSONObject) obj.get("uploadedBy"));
-			img.image       = parseBase64(obj.get("imgData").toString());
+			img.uploadedBy  = JSONUser.parse((JSONObject) obj.get("uploadedby"));
+			img.image       = parseBase64(obj.get("imgdata").toString());
 			images.add(img);
 		});
 		
