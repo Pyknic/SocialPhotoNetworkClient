@@ -83,7 +83,7 @@ public class JSONUser {
 		usr.lastname  = user.get("lastname").toString();
 		usr.avatar    = Optional.ofNullable(user.get("avatar"))
 			.map(Object::toString)
-			.filter(String::isEmpty)
+			.filter(s -> !s.isEmpty())
 			.map(s -> fromBase64(s))
 			.orElse(null);
 		
