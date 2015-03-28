@@ -20,6 +20,7 @@ import static com.speedment.examples.polaroid.util.Base64Util.fromBase64;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.scene.image.Image;
 import org.json.simple.JSONArray;
@@ -74,6 +75,8 @@ public class JSONImage implements Comparable<JSONImage> {
 			img.image       = fromBase64(obj.get("imgdata").toString());
 			images.add(img);
 		});
+		
+		Collections.sort(images);
 		
 		return images;
 	}
