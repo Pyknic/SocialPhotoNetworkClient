@@ -35,8 +35,8 @@ public interface ClientAPI {
 	boolean follow(long userId);
 	List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to);
 	
-	default List<JSONImage> browse(Optional<LocalDateTime> after) {
-		return browse(Optional.empty(), after);
+	default List<JSONImage> browse(Optional<LocalDateTime> from) {
+		return browse(from, Optional.empty());
 	}
 	
 	default List<JSONImage> browse() {
