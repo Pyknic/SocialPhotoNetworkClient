@@ -16,38 +16,28 @@
  */
 package com.speedment.examples.polaroid.controllers;
 
+import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONImage;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
  *
  * @author Emil Forslund
  */
-public class PictureController implements Initializable {
+public class ThumbnailController implements Initializable {
 	
-	@FXML private VBox container;
-	@FXML private Label title;
 	@FXML private ImageView picture;
-	@FXML private Label description;
-	@FXML private Label meta;
-	@FXML private Button buttonCancel;
-	
-	private final JSONImage img;
-	private Consumer<Boolean> cancelListener;
-	
-	public PictureController(JSONImage img) {
-		this.img = img;
-	}
+	@FXML private Label title;
+
+	private JSONImage img;
+	private Consumer<JSONImage> clickListener;
 
 	/**
 	 * Initializes the controller class.
@@ -56,24 +46,20 @@ public class PictureController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		title.setText(img.getTitle());
-		description.setText(img.getDescription());
-		picture.setImage(img.getImage());
-		meta.setText("Uploaded " + 
-			img.getUploaded().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-				.replace("T", " ") + 
-			" by " + img.getUploadedBy().getFirstname() + 
-			" " + img.getUploadedBy().getLastname() + "."
-		);
-		
-		buttonCancel.setOnAction(ev -> {
-			if (cancelListener != null) {
-				cancelListener.accept(true);
+		picture.setOnMousePressed(ev -> {
+			if (ev.isPrimaryButtonDown()) {
+				clickListener.accept(img);
 			}
 		});
-	}	
+	}
 	
-	public void onCancel(Consumer<Boolean> listener) {
-		cancelListener = listener;
+	public void fromJSON(JSONImage img) {
+		this.img = img;
+		picture.setImage(img.getImage());
+		title.textProperty().setValue(img.getTitle());
+	}
+	
+	public void onClick(Consumer<JSONImage> listener) {
+		clickListener = listener;
 	}
 }

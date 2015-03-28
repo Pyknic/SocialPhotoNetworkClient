@@ -1,3 +1,19 @@
+/**
+ *
+ * Copyright (c) 2006-2015, Speedment, Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); You may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.Client;
@@ -193,6 +209,17 @@ public class SceneController implements Initializable {
 		});
 	}
 	
+	public void showPicture(JSONImage img) {
+		final PictureController controller = new PictureController(img);
+		final VBox popup = showFXMLPopup("Picture.fxml", controller);
+		
+		controller.onCancel(success -> {
+			FadeAnimation.fadeOut(popup, ev -> {
+				container.getChildren().remove(popup);
+			});
+		});
+	}
+	
 	private VBox showFXMLPopup(String name, Object controller) {
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/" + name));
@@ -215,15 +242,16 @@ public class SceneController implements Initializable {
 	
 	public StackPane showImage(JSONImage img) {
 		try {
-			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Picture.fxml"));
-			final PictureController controller = new PictureController(client);
+			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Thumbnail.fxml"));
+			final ThumbnailController controller = new ThumbnailController();
 			loader.setController(controller);
 			final StackPane box = (StackPane) loader.load();
+			controller.onClick(this::showPicture);
 			controller.fromJSON(img);
 			return box;
 		} catch (IOException ex) {
 			Logger.getLogger(SceneController.class.getName()).log(
-				Level.SEVERE, "Could not find 'Picture.fxml'.", ex
+				Level.SEVERE, "Could not find 'Thumbnail.fxml'.", ex
 			);
 		}
 		

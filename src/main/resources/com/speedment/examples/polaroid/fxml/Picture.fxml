@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #666;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<VBox fx:id="container" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="8.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="picture" fitHeight="160.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
-      <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" style="-fx-background-color: rgba(0,0,0,0.5);" text="Label" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
-         <padding>
-            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-         </padding>
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
+      <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Picture title" textAlignment="CENTER" textFill="WHITE">
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect>
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="8.0" />
+         </VBox.margin>
       </Label>
+      <ImageView fx:id="picture" fitHeight="256.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../../Pictures/clocktower.jpg" />
+         </image>
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" color="#00000080" height="16.0" radius="7.5" width="16.0" />
+         </effect>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </ImageView>
+      <Label fx:id="description" prefWidth="512.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum, turpis dapibus pretium commodo, lorem tellus vestibulum enim, eget gravida dui ipsum vel leo. Nullam ut tortor at odio porttitor ultricies vitae a velit. Quisque lacinia mattis nibh et tempor. Mauris fringilla nibh a urna vehicula, id scelerisque velit feugiat. Mauris ut neque iaculis, cursus quam vel, interdum erat. Mauris lacinia ligula nibh. Integer quis dolor enim. Phasellus posuere neque a lorem finibus venenatis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eget lacus lorem. Maecenas purus odio, semper in lacinia iaculis, imperdiet ac ipsum. Donec varius porta sem eu rhoncus. Vivamus imperdiet tempus nisi, vel euismod sapien tempus at." textAlignment="JUSTIFY" textFill="#888888" wrapText="true">
+         <effect>
+            <DropShadow color="#00000080" height="8.0" radius="3.5" width="8.0" />
+         </effect>
+      </Label>
+      <Label fx:id="meta" prefWidth="512.0" text="Uploaded 2015-03-28 20:21 by Emil Forslund." textFill="#222222" wrapText="true" />
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Cancel" textFill="#bad9ff">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <effect>
-      <DropShadow blurType="TWO_PASS_BOX" color="#00000080" height="16.0" radius="7.5" width="16.0" />
+      <DropShadow color="#00000080" height="20.0" offsetY="2.0" radius="9.5" width="20.0" />
    </effect>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-</StackPane>
+   <padding>
+      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+   </padding>
+</VBox>
