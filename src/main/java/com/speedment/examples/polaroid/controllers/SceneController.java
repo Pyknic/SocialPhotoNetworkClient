@@ -39,8 +39,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -48,6 +50,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -274,10 +277,24 @@ public class SceneController implements Initializable {
 	}
 	
 	public void browseAndAppend() {
-		tilepanel.getChildren().addAll(0, 
-			client.browse().stream()
-			.map(i -> showImage(i))
-			.collect(Collectors.toList())
-		);
+		try {
+			tilepanel.getChildren().addAll(0, 
+				client.browse().stream()
+				.map(i -> showImage(i))
+				.collect(Collectors.toList())
+			);
+		} catch (IllegalArgumentException iae) {
+			StackPane p = new StackPane();
+			p.setStyle("-fx-background-color:red;");
+			p.setAlignment(Pos.CENTER);
+			Label error = new Label("404 :(");
+			error.setFont(new Font(100));
+			error.setStyle("-fx-text-fill:yellow;");
+			p.getChildren().add(error);
+			p.prefWidthProperty().bind(container.widthProperty());
+			p.prefHeightProperty().bind(container.heightProperty());
+			container.getChildren().add(p);
+			LayoutUtil.centerInParent(p);
+		}
 	}
 }
