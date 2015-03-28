@@ -11,12 +11,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>com.speedment.examples.polaroid.MainApp</mainClass>
-    </properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+		<mainClass>com.speedment.examples.polaroid.MainApp</mainClass>
+	</properties>
 
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->
-        <name>Your Organisation</name>
+        <name>Speedment AB</name>
     </organization>
 
     <build>
@@ -39,7 +41,9 @@
                         </configuration>
                     </execution>
                 </executions>
+				
             </plugin>
+			
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -71,12 +75,12 @@
                     <execution>
                         <id>default-cli</id>
                         <goals>
-                            <goal>exec</goal>                            
-                        </goals>
+                            <goal>exec</goal>
+						</goals>
                         <configuration>
                             <executable>${java.home}/bin/java</executable>
                             <commandlineArgs>${runfx.args}</commandlineArgs>
-                        </configuration>
+						</configuration>
                     </execution>
                 </executions>  
             </plugin>
