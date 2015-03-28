@@ -65,6 +65,7 @@ public class SearchResultController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		firstAndLastname.setText(user.getFirstname() + " " + user.getLastname());
 		mail.setText(user.getMail());
+		profileSmall.setImage(user.getAvatar());
 		
 		buttonFollow.setOnAction(ev -> {
 			buttonFollow.setDisable(true);
