@@ -64,7 +64,7 @@ public class JSONUser {
 		usr.mail      = user.get("mail").toString();
 		usr.firstname = user.get("firstname").toString();
 		usr.lastname  = user.get("lastname").toString();
-		usr.avatar    = fromBase64(user.get("imgdata").toString());
+		usr.avatar    = fromBase64(user.get("avatar").toString());
 		return usr;
 	}
 }
