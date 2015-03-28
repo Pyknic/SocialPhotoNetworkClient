@@ -1,6 +1,7 @@
 package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.Client;
+import com.speedment.examples.polaroid.util.LayoutUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -18,6 +20,8 @@ import javafx.scene.control.TextField;
  * @author Emil Forslund
  */
 public class LoginController implements Initializable {
+	
+	@FXML private VBox container;
 	@FXML private TextField fieldMail;
 	@FXML private PasswordField fieldPassword;
 	@FXML private Button buttonRegister;
@@ -40,7 +44,7 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		labelError.setVisible(false);
-		
+
 		fieldMail.textProperty().addListener(ev -> {
 			labelError.setVisible(false);
 		});

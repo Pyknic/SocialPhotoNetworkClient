@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="320.0" maxWidth="1.7976931348623157E308" minHeight="64.0" pannable="true" prefViewportWidth="480.0" style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" maxHeight="320.0" maxWidth="1.7976931348623157E308" minHeight="64.0" minWidth="-Infinity" pannable="true" prefViewportHeight="128.0" prefViewportWidth="480.0" style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox fx:id="container" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="480.0" style="-fx-background-color: #444;">
          <children>
@@ -21,4 +22,7 @@
          </children>
       </VBox>
    </content>
+   <effect>
+      <DropShadow blurType="TWO_PASS_BOX" color="#00000080" height="16.0" offsetY="2.0" radius="7.5" width="16.0" />
+   </effect>
 </ScrollPane>

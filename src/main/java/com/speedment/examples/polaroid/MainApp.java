@@ -4,8 +4,8 @@ import com.speedment.examples.polaroid.controllers.SceneController;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -18,7 +18,7 @@ public class MainApp extends Application {
         final SceneController control = new SceneController(stage);
 		loader.setController(control);
 		
-		final StackPane root = (StackPane) loader.load();
+		final Parent root = (Parent) loader.load();
         final Scene scene = new Scene(root);
 		
         scene.getStylesheets().add(PATH + "/styles/Styles.css");

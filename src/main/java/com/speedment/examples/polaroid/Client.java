@@ -2,6 +2,7 @@ package com.speedment.examples.polaroid;
 
 import static com.speedment.examples.polaroid.Http.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -49,9 +50,8 @@ public class Client implements ClientAPI {
 		))
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parse(s)).orElseThrow(() -> 
-			new IllegalArgumentException("'find' did not give any results. Logged in?")
-		);
+		.map(s -> JSONUser.parse(s))
+		.orElse(new ArrayList<>());
 	}
 
 	@Override

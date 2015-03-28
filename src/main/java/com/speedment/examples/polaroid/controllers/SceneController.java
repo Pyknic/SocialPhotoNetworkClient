@@ -6,6 +6,7 @@ import static com.speedment.examples.polaroid.MainApp.PATH;
 import static com.speedment.examples.polaroid.controllers.UploadController.handleDrop;
 import static com.speedment.examples.polaroid.controllers.UploadController.handleOver;
 import com.speedment.examples.polaroid.util.FadeAnimation;
+import com.speedment.examples.polaroid.util.LayoutUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -32,7 +33,7 @@ import javafx.stage.Stage;
  */
 public class SceneController implements Initializable {
 	
-	@FXML private StackPane container;
+	@FXML private Pane container;
 	@FXML private HBox searchParent;
 	@FXML private TextField search;
 	@FXML private TilePane tilepanel;
@@ -54,6 +55,13 @@ public class SceneController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		SearchController.showIn(container.getChildren(), search, client);
+		
+		background.prefWidthProperty().bind(container.widthProperty());
+		background.prefHeightProperty().bind(container.heightProperty());
+		foreground.prefWidthProperty().bind(container.widthProperty());
+		foreground.prefHeightProperty().bind(container.heightProperty());
+		
 		Platform.runLater(() -> {
 			searchParent.requestFocus();
 		});
@@ -156,6 +164,7 @@ public class SceneController implements Initializable {
 
 			box.setOpacity(0);
 			container.getChildren().add(box);
+			LayoutUtil.centerInParent(box);
 			FadeAnimation.fadeIn(box);
 			return box;
 		} catch (IOException ex) {

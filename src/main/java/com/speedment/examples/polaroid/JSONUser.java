@@ -18,10 +18,26 @@ public class JSONUser {
 	private String lastname;
 	
 	private JSONUser() {}
+
+	public long getId() {
+		return id;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
 	
 	public static List<JSONUser> parse(String json) {
-		final JSONObject container   = (JSONObject) JSONValue.parse(json);
-		final JSONArray array		 = (JSONArray) container.get("users");
+		final JSONObject container = (JSONObject) JSONValue.parse(json);
+		final JSONArray array	   = (JSONArray) container.get("users");
 		final List<JSONUser> users = new ArrayList<>();
 		
 		array.stream().forEach(u -> {

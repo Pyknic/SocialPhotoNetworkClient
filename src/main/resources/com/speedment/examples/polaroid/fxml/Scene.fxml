@@ -8,7 +8,8 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="container" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!--  fx:controller="com.speedment.examples.polaroid.SceneController" -->
+
+<Pane fx:id="container" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="background" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
@@ -50,7 +51,7 @@
             <GaussianBlur radius="3.0" />
          </effect>
       </VBox>
-      <Pane fx:id="foreground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.1);">
+      <Pane fx:id="foreground" layoutX="32.0" layoutY="32.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.1);">
          <effect>
             <GaussianBlur radius="32.0" />
          </effect>
@@ -59,4 +60,4 @@
          </opaqueInsets>
       </Pane>
    </children>
-</StackPane>
+</Pane>
