@@ -127,7 +127,7 @@ public class Client implements ClientAPI {
 		final List<JSONImage> result = browse(Optional.ofNullable(lastBrowse));
 		
 		lastBrowse = result.stream()
-			.sorted()
+			.sorted(Comparator.reverseOrder())
 			.findFirst()
 			.map(i -> i.getUploaded())
 			.orElse(lastBrowse);
