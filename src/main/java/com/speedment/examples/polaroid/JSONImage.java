@@ -1,7 +1,9 @@
 package com.speedment.examples.polaroid;
 
 import static com.speedment.examples.polaroid.util.Base64Util.fromBase64;
+import com.speedment.examples.polaroid.util.FileUtil;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,8 @@ public class JSONImage implements Comparable<JSONImage> {
 	}
 	
 	public static List<JSONImage> parseFrom(String json) {
+		FileUtil.create("temp/log.txt", json);
+		
 		final JSONObject container = (JSONObject) JSONValue.parse(json);
 		final JSONArray array = (JSONArray) container.get("images");
 		final List<JSONImage> images = new ArrayList<>();
@@ -52,7 +56,7 @@ public class JSONImage implements Comparable<JSONImage> {
 			final JSONImage img = new JSONImage();
 			img.title		= obj.get("title").toString();
 			img.description = obj.get("description").toString();
-			img.uploaded	= LocalDateTime.parse(obj.get("uploaded").toString());
+			img.uploaded	= LocalDateTime.parse(obj.get("uploaded").toString().trim().replace(" ", "T"));
 			img.uploadedBy  = JSONUser.parse((JSONObject) obj.get("uploadedby"));
 			img.image       = fromBase64(obj.get("imgdata").toString());
 			images.add(img);
