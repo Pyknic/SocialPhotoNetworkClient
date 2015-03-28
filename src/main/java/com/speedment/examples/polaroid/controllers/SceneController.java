@@ -13,7 +13,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import static javafx.animation.Animation.INDEFINITE;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +32,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -59,7 +66,7 @@ public class SceneController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		SearchController.showIn(container.getChildren(), search, client);
 		buttonProfile.setText("");
-		
+
 		background.prefWidthProperty().bind(container.widthProperty());
 		background.prefHeightProperty().bind(container.heightProperty());
 		foreground.prefWidthProperty().bind(container.widthProperty());
@@ -77,13 +84,21 @@ public class SceneController implements Initializable {
 	}
 	
 	private void whenLoggedIn() {
-		//buttonProfile.se
-		client.browse().stream().forEachOrdered(img -> 
-			showImage(img)
-		);
+		browseAndAppend();
+		buttonProfile.setOnAction(ev -> showProfile());
+		
 		foreground.setVisible(false);
 		background.setEffect(null);
 		enableDragging();
+		
+		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), (ActionEvent event) -> {
+			client.browse().stream().forEachOrdered(img -> 
+				browseAndAppend()
+			);
+		}));
+		
+		refresh.setCycleCount(INDEFINITE);
+		refresh.play();
 	}
 	
 	public void showLogin() {
@@ -145,7 +160,7 @@ public class SceneController implements Initializable {
 			if (success) {
 				FadeAnimation.fadeOut(popup, ev -> {
 					container.getChildren().remove(popup);
-					client.browse();
+					browseAndAppend();
 				});
 			} else {
 				controller.setError("Error! Upload failed.");
@@ -162,7 +177,7 @@ public class SceneController implements Initializable {
 		controller.loadFile(file);
 	}
 	
-	public void showProfile(File file) {
+	public void showProfile() {
 		final ProfileController controller = new ProfileController(client);
 		final VBox popup = showFXMLPopup("Profile.fxml", controller);
 		
@@ -174,12 +189,9 @@ public class SceneController implements Initializable {
 		
 		controller.onCancel(success -> {
 			FadeAnimation.fadeOut(popup, ev -> {
-					container.getChildren().remove(popup);
-				}
-			);
+				container.getChildren().remove(popup);
+			});
 		});
-		
-		controller.loadFile(file);
 	}
 	
 	private VBox showFXMLPopup(String name, Object controller) {
@@ -202,20 +214,28 @@ public class SceneController implements Initializable {
 		return null;
 	}
 	
-	public void showImage(JSONImage img) {
+	public StackPane showImage(JSONImage img) {
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Picture.fxml"));
 			final PictureController controller = new PictureController(client);
 			loader.setController(controller);
 			final StackPane box = (StackPane) loader.load();
 			controller.fromJSON(img);
-			tilepanel.getChildren().add(box);
-			
+			return box;
 		} catch (IOException ex) {
 			Logger.getLogger(SceneController.class.getName()).log(
 				Level.SEVERE, "Could not find 'Picture.fxml'.", ex
 			);
 		}
+		
+		return null;
 	}
 	
+	public void browseAndAppend() {
+		tilepanel.getChildren().addAll(0, 
+			client.browse().stream()
+			.map(i -> showImage(i))
+			.collect(Collectors.toList())
+		);
+	}
 }
