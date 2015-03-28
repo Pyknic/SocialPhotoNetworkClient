@@ -89,7 +89,7 @@ public class SearchResultController implements Initializable {
 			final SearchResultController controller = new SearchResultController(user, client);
 			loader.setController(controller);
 			final HBox box = (HBox) loader.load();
-			siblings.add(box);
+			siblings.add(0, box);
 			return box;
 		} catch (IOException ex) {
 			Logger.getLogger(SearchResultController.class.getName()).log(
