@@ -19,6 +19,7 @@ package com.speedment.examples.polaroid;
 import static com.speedment.examples.polaroid.Http.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,11 +107,11 @@ public class Client implements ClientAPI {
 	}
 
 	@Override
-	public List<JSONImage> browse(Optional<LocalDateTime> after, Optional<LocalDateTime> before) {
+	public List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to) {
 		return post(host + "/browse", params(
 			param("sessionkey", sessionKey),
-			param("before", before.map(b -> b.toString()).orElse("")),
-			param("after", after.map(b -> b.toString()).orElse(""))
+			param("to", to.map(b -> b.toString()).orElse("")),
+			param("from", from.map(b -> b.toString()).orElse(""))
 		))
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())

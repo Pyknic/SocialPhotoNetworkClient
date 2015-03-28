@@ -33,7 +33,7 @@ public interface ClientAPI {
 	JSONUser self();
 	JSONUser update(String mail, String firstname, String lastname, String imgData);
 	boolean follow(long userId);
-	List<JSONImage> browse(Optional<LocalDateTime> after, Optional<LocalDateTime> before);
+	List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to);
 	
 	default List<JSONImage> browse(Optional<LocalDateTime> after) {
 		return browse(Optional.empty(), after);
