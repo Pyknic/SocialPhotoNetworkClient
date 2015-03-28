@@ -19,6 +19,7 @@ package com.speedment.examples.polaroid.util;
 import com.speedment.examples.polaroid.JSONImage;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,19 +38,24 @@ public final class ImageResizeUtil {
 	public static String loadAndEncode(File imgFile, int maxWidth, int maxHeight) {
 		try {
 			final BufferedImage original = ImageIO.read(imgFile);
-			final double factor = Math.min(maxWidth, maxHeight) / 
-				Math.min(original.getWidth(), original.getHeight());
 			final BufferedImage resized = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = resized.createGraphics();
 			
-			g.drawImage(original, 
-				(int) (maxWidth / 2 - original.getWidth() * factor / 2), 
-				(int) (maxHeight / 2 - original.getHeight() * factor / 2), 
+			final Image temp;
+			if (original.getWidth() > original.getHeight()) {
+				temp = original.getScaledInstance(-1, maxHeight, Image.SCALE_SMOOTH);
+			} else {
+				temp = original.getScaledInstance(maxWidth, -1, Image.SCALE_SMOOTH);
+			}
+
+			g.drawImage(temp, 
+				(int) (maxWidth * 0.5 - temp.getWidth(null) * 0.5), 
+				(int) (maxHeight * 0.5 - temp.getHeight(null) * 0.5), 
 				maxWidth, maxHeight,
-				0, 0, original.getWidth(), original.getHeight(),
+				0, 0, temp.getWidth(null), temp.getHeight(null),
 				null
 			);
-			
+
 			byte[] bytes;
 			
 			try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
