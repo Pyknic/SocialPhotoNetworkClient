@@ -19,6 +19,7 @@ package com.speedment.examples.polaroid;
 import static com.speedment.examples.polaroid.util.Base64Util.fromBase64;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javafx.scene.image.Image;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -80,7 +81,12 @@ public class JSONUser {
 		usr.mail      = user.get("mail").toString();
 		usr.firstname = user.get("firstname").toString();
 		usr.lastname  = user.get("lastname").toString();
-		usr.avatar    = fromBase64(user.get("avatar").toString());
+		usr.avatar    = Optional.ofNullable(user.get("avatar"))
+			.map(Object::toString)
+			.filter(String::isEmpty)
+			.map(s -> fromBase64(s))
+			.orElse(null);
+		
 		return usr;
 	}
 }
