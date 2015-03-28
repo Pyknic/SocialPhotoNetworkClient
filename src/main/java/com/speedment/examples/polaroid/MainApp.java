@@ -44,7 +44,7 @@ public class MainApp extends Application {
 		stage.setScene(scene);
         stage.show();
 
-		control.showLogin();
+		control.showLogin(Settings.inst().get("mail", ""), "");
     }
 
     public static void main(String[] args) {

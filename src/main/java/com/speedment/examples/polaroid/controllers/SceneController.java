@@ -20,6 +20,7 @@ import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONImage;
 import com.speedment.examples.polaroid.JSONUser;
 import static com.speedment.examples.polaroid.MainApp.PATH;
+import com.speedment.examples.polaroid.Settings;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
 import com.speedment.examples.polaroid.util.FadeAnimation;
@@ -70,7 +71,10 @@ public class SceneController implements Initializable {
 	
 	public SceneController(Stage root) {
 		this.root = root;
-		this.client = new Client("http://127.0.0.1:8080");
+		this.client = new Client(
+			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
+			Settings.inst().get("port", "8080")
+		);
 	}
 
 	/**
@@ -122,6 +126,8 @@ public class SceneController implements Initializable {
 		icon.setFitHeight(32);
 		buttonProfile.setGraphic(icon);
 		buttonProfile.setOnAction(ev -> showProfile(user));
+		
+		Settings.inst().set("mail", user.getMail());
 	}
 	
 	public void showLogin() {
