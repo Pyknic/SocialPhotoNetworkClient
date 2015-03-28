@@ -18,6 +18,7 @@ package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONUser;
+import static com.speedment.examples.polaroid.util.Avatar.DEFAULT_AVATAR_IMG;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
 import com.speedment.examples.polaroid.util.ImageResizeUtil;
@@ -73,7 +74,9 @@ public class ProfileController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		if (user != null) {
-			if (user.getAvatar() != null) {
+			if (user.getAvatar() == null) {
+				profile.setImage(DEFAULT_AVATAR_IMG);
+			} else {
 				profile.setImage(user.getAvatar());
 			}
 			

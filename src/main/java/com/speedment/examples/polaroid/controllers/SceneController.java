@@ -21,6 +21,8 @@ import com.speedment.examples.polaroid.JSONImage;
 import com.speedment.examples.polaroid.JSONUser;
 import static com.speedment.examples.polaroid.MainApp.PATH;
 import com.speedment.examples.polaroid.Settings;
+import com.speedment.examples.polaroid.util.Avatar;
+import static com.speedment.examples.polaroid.util.Avatar.DEFAULT_AVATAR_IMG;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
 import com.speedment.examples.polaroid.util.FadeAnimation;
@@ -124,7 +126,14 @@ public class SceneController implements Initializable {
 	private void updateProfileButton() {
 		final JSONUser user = client.self();
 		buttonProfile.setText(user.getFirstname() + " " + user.getLastname());
-		final ImageView icon = new ImageView(user.getAvatar());
+		
+		final ImageView icon;
+		if (user.getAvatar() == null) {
+			icon = new ImageView(DEFAULT_AVATAR_IMG);
+		} else {
+			icon = new ImageView(user.getAvatar());
+		}
+
 		icon.setFitWidth(32);
 		icon.setFitHeight(32);
 		buttonProfile.setGraphic(icon);
