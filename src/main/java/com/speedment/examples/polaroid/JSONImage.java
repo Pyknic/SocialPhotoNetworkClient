@@ -80,6 +80,6 @@ public class JSONImage implements Comparable<JSONImage> {
 
 	@Override
 	public int compareTo(JSONImage o) {
-		return (int) Duration.between(uploaded, o.uploaded).getSeconds();
+		return (int) Duration.between(o.uploaded, uploaded).getSeconds();
 	}
 }
