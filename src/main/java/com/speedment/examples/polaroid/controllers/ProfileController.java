@@ -82,6 +82,8 @@ public class ProfileController implements Initializable {
 			fieldMail.setText(user.getMail());
 		}
 		
+		labelError.setText("");
+		
 		buttonCancel.setOnAction(ev -> {
 			if (cancelListener != null) {
 				cancelListener.accept(true);
