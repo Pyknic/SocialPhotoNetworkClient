@@ -281,6 +281,10 @@ public class SceneController implements Initializable {
 			tilepanel.getChildren().addAll(0, 
 				client.browse().stream()
 				.map(i -> showImage(i))
+				.map(i -> {
+					i.setRotate(Math.random() * 20 - 10);
+					return i;
+				})
 				.collect(Collectors.toList())
 			);
 		} catch (IllegalArgumentException iae) {
