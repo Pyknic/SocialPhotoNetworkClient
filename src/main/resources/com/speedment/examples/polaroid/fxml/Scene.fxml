@@ -48,7 +48,7 @@
                <children>
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefViewportHeight="632.0" prefViewportWidth="980.0" style="-fx-background-color: transparent;">
                      <content>
-                        <TilePane fx:id="tilepanel" hgap="24.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefTileHeight="240.0" prefTileWidth="320.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="24.0">
+                        <TilePane fx:id="tilepanel" hgap="24.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefColumns="4" prefHeight="200.0" prefRows="20" prefTileHeight="256.0" prefTileWidth="256.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="24.0">
                            <padding>
                               <Insets bottom="24.0" left="64.0" right="64.0" top="24.0" />
                            </padding>
