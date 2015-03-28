@@ -7,10 +7,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #666;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #666;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="picture" fitHeight="256.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
-      <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="17.0" style="-fx-background-color: rgba(0,0,0,0.5);" text="Label" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
+      <Label fx:id="title" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" style="-fx-background-color: rgba(0,0,0,0.5);" text="Label" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
          <padding>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </padding>
@@ -20,7 +20,7 @@
       </Label>
    </children>
    <effect>
-      <DropShadow blurType="TWO_PASS_BOX" color="#00000080" height="16.0" radius="7.5" width="16.0" />
+      <DropShadow blurType="TWO_PASS_BOX" color="#00000080" height="32.0" offsetY="2.0" radius="15.5" width="32.0" />
    </effect>
    <opaqueInsets>
       <Insets />
