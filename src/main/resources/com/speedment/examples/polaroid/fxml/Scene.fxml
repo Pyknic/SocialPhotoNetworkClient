@@ -9,7 +9,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <Pane fx:id="container" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="background" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -47,7 +46,7 @@
                   <InnerShadow color="#00000040" height="16.0" offsetY="2.0" radius="3.5" width="0.0" />
                </effect>
                <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefViewportHeight="632.0" prefViewportWidth="980.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefViewportHeight="632.0" prefViewportWidth="980.0" style="-fx-background-color: transparent;">
                      <content>
                         <TilePane fx:id="tilepanel" hgap="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefTileHeight="240.0" prefTileWidth="320.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="12.0">
                            <padding>
