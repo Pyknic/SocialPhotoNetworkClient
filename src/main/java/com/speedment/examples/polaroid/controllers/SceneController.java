@@ -106,11 +106,9 @@ public class SceneController implements Initializable {
 		background.setEffect(null);
 		enableDragging();
 		
-		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), (ActionEvent event) -> {
-			client.browse().stream().forEachOrdered(img -> 
-				browseAndAppend()
-			);
-		}));
+		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), ev -> 
+			browseAndAppend()
+		));
 		
 		refresh.setCycleCount(INDEFINITE);
 		refresh.play();
