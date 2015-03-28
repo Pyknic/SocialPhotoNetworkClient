@@ -18,6 +18,7 @@ package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONImage;
+import com.speedment.examples.polaroid.JSONUser;
 import static com.speedment.examples.polaroid.MainApp.PATH;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
@@ -34,13 +35,13 @@ import static javafx.animation.Animation.INDEFINITE;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -100,11 +101,10 @@ public class SceneController implements Initializable {
 	
 	private void whenLoggedIn() {
 		browseAndAppend();
-		buttonProfile.setOnAction(ev -> showProfile());
-		
 		foreground.setVisible(false);
 		background.setEffect(null);
 		enableDragging();
+		updateProfileButton();
 		
 		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), ev -> 
 			browseAndAppend()
@@ -112,6 +112,16 @@ public class SceneController implements Initializable {
 		
 		refresh.setCycleCount(INDEFINITE);
 		refresh.play();
+	}
+	
+	private void updateProfileButton() {
+		final JSONUser user = client.self();
+		buttonProfile.setText(user.getFirstname() + " " + user.getLastname());
+		final ImageView icon = new ImageView(user.getAvatar());
+		icon.setFitWidth(32);
+		icon.setFitHeight(32);
+		buttonProfile.setGraphic(icon);
+		buttonProfile.setOnAction(ev -> showProfile(user));
 	}
 	
 	public void showLogin() {
@@ -190,13 +200,14 @@ public class SceneController implements Initializable {
 		controller.loadFile(file);
 	}
 	
-	public void showProfile() {
-		final ProfileController controller = new ProfileController(client);
+	public void showProfile(JSONUser user) {
+		final ProfileController controller = new ProfileController(user, client);
 		final VBox popup = showFXMLPopup("Profile.fxml", controller);
 		
 		controller.onSave(usr -> {
 			FadeAnimation.fadeOut(popup, ev -> {
 				container.getChildren().remove(popup);
+				updateProfileButton();
 			});
 		});
 		

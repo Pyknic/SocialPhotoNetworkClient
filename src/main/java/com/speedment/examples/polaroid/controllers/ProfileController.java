@@ -20,7 +20,6 @@ import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONUser;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
-import com.speedment.examples.polaroid.util.FadeAnimation;
 import com.speedment.examples.polaroid.util.ImageResizeUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,8 +60,8 @@ public class ProfileController implements Initializable {
 	
 	private File lastFile;
 	
-	public ProfileController(Client client) {
-		this.user   = client.self();
+	public ProfileController(JSONUser user, Client client) {
+		this.user   = user;
 		this.client = client;
 	}
 
