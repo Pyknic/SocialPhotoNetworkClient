@@ -3,8 +3,8 @@ package com.speedment.examples.polaroid.controllers;
 import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONImage;
 import static com.speedment.examples.polaroid.MainApp.PATH;
-import static com.speedment.examples.polaroid.controllers.UploadController.handleDrop;
-import static com.speedment.examples.polaroid.controllers.UploadController.handleOver;
+import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
+import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
 import com.speedment.examples.polaroid.util.FadeAnimation;
 import com.speedment.examples.polaroid.util.LayoutUtil;
 import java.io.File;
@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -35,6 +36,7 @@ public class SceneController implements Initializable {
 	
 	@FXML private Pane container;
 	@FXML private HBox searchParent;
+	@FXML private Button buttonProfile;
 	@FXML private TextField search;
 	@FXML private TilePane tilepanel;
 	@FXML private VBox background;
@@ -56,6 +58,7 @@ public class SceneController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		SearchController.showIn(container.getChildren(), search, client);
+		buttonProfile.setText("");
 		
 		background.prefWidthProperty().bind(container.widthProperty());
 		background.prefHeightProperty().bind(container.heightProperty());
@@ -71,6 +74,16 @@ public class SceneController implements Initializable {
 		final Scene scene = container.getScene();
 		scene.setOnDragOver(ev -> handleOver(ev));
 		scene.setOnDragDropped(ev -> handleDrop(ev, f -> showUpload(f)));
+	}
+	
+	private void whenLoggedIn() {
+		//buttonProfile.se
+		client.browse().stream().forEachOrdered(img -> 
+			showImage(img)
+		);
+		foreground.setVisible(false);
+		background.setEffect(null);
+		enableDragging();
 	}
 	
 	public void showLogin() {
@@ -91,12 +104,7 @@ public class SceneController implements Initializable {
 			FadeAnimation.fadeOut(popup, 
 				ev -> container.getChildren().remove(popup)
 			);
-			client.browse().stream().forEachOrdered(img -> 
-				showImage(img)
-			);
-			foreground.setVisible(false);
-			background.setEffect(null);
-			enableDragging();
+			whenLoggedIn();
 		});
 
 		controller.onShowRegister((m, p) -> {
@@ -118,8 +126,7 @@ public class SceneController implements Initializable {
 			FadeAnimation.fadeOut(popup, 
 				ev -> container.getChildren().remove(popup)
 			);
-			foreground.setVisible(false);
-			background.setEffect(null);
+			whenLoggedIn();
 		});
 
 		controller.onCancel((m, p) -> {
@@ -137,13 +144,32 @@ public class SceneController implements Initializable {
 		controller.onUpload(success -> {
 			if (success) {
 				FadeAnimation.fadeOut(popup, ev -> {
-						container.getChildren().remove(popup);
-						client.browse();
-					}
-				);
+					container.getChildren().remove(popup);
+					client.browse();
+				});
 			} else {
 				controller.setError("Error! Upload failed.");
 			}
+		});
+		
+		controller.onCancel(success -> {
+			FadeAnimation.fadeOut(popup, ev -> {
+					container.getChildren().remove(popup);
+				}
+			);
+		});
+		
+		controller.loadFile(file);
+	}
+	
+	public void showProfile(File file) {
+		final ProfileController controller = new ProfileController(client);
+		final VBox popup = showFXMLPopup("Profile.fxml", controller);
+		
+		controller.onSave(usr -> {
+			FadeAnimation.fadeOut(popup, ev -> {
+				container.getChildren().remove(popup);
+			});
 		});
 		
 		controller.onCancel(success -> {

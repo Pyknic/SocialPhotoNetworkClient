@@ -53,6 +53,17 @@ public class Client implements ClientAPI {
 		.map(s -> JSONUser.parse(s))
 		.orElse(new ArrayList<>());
 	}
+	
+	@Override
+	public JSONUser self() {
+		return post(host + "/self", params(
+			param("sessionkey", sessionKey)
+		))
+		.filter(s -> !s.equals("false"))
+		.filter(s -> !s.isEmpty())
+		.map(s -> JSONUser.parseOne(s))
+		.get();
+	}
 
 	@Override
 	public boolean follow(long userId) {
@@ -63,6 +74,20 @@ public class Client implements ClientAPI {
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> true).orElse(false);
+	}
+	
+	@Override
+	public JSONUser update(String mail, String firstname, String lastname, String imgData) {
+		return post(host + "/update", params(
+			param("mail", mail),
+			param("firstname", firstname),
+			param("lastname", lastname),
+			param("sessionkey", sessionKey)
+		))
+		.filter(s -> !s.equals("false"))
+		.filter(s -> !s.isEmpty())
+		.map(s -> JSONUser.parseOne(s))
+		.get();
 	}
 
 	@Override

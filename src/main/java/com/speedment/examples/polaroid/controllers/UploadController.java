@@ -1,13 +1,13 @@
 package com.speedment.examples.polaroid.controllers;
 
 import com.speedment.examples.polaroid.ClientAPI;
-import com.speedment.examples.polaroid.JSONImage;
+import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
+import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
+import com.speedment.examples.polaroid.util.ImageResizeUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
@@ -18,9 +18,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import static javafx.scene.input.TransferMode.COPY;
 
 /**
  * FXML Controller class
@@ -35,10 +32,6 @@ public class UploadController implements Initializable {
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonUpload;
 	@FXML private Label labelError;
-	
-	private final static List<String> ACCEPTED_EXTENSIONS = Arrays.asList(new String[] {
-		"png", "jpg", "bmp", "gif", "jpeg"
-	});
 	
 	private final ClientAPI client;
 	private Consumer<Boolean> onUpload;
@@ -64,8 +57,8 @@ public class UploadController implements Initializable {
 			labelError.setVisible(false);
 			onUpload.accept(client.upload(
 				fieldTitle.getText(), 
-				fieldDescription.getText(), 
-				JSONImage.toBase64(lastFile)
+				fieldDescription.getText(),
+				ImageResizeUtil.loadAndEncode(lastFile, 256, 256)
 			));
 		});
 		
@@ -75,34 +68,6 @@ public class UploadController implements Initializable {
 		});
 		
 		labelError.setVisible(false);
-	}
-	
-	public static void handleOver(DragEvent ev) {
-		final Dragboard db = ev.getDragboard();
-
-		if (db.hasFiles()) {
-			ev.acceptTransferModes(COPY);
-		} else {
-			ev.consume();
-		}
-	}
-	
-	public static void handleDrop(DragEvent ev, Consumer<File> ifValid) {
-		final Dragboard db = ev.getDragboard();
-		boolean success = false;
-
-		if (db.hasFiles()) {
-			success = true;
-
-			db.getFiles().stream()
-				.filter(f -> f.isFile())
-				.filter(f -> ACCEPTED_EXTENSIONS.contains(extensionOf(f)))
-				.findFirst()
-				.ifPresent(f -> ifValid.accept(f));
-		}
-
-		ev.setDropCompleted(success);
-		ev.consume();
 	}
 	
 	public void onUpload(Consumer<Boolean> listener) {
@@ -127,14 +92,4 @@ public class UploadController implements Initializable {
 			throw new RuntimeException("File '" + file.getName() + "' could not be found.");
 		}
 	}
-	
-	private static String extensionOf(File file) {
-		final int i = file.getName().lastIndexOf(".");
-		if (i > 0) {
-			return file.getName().substring(i + 1);
-		} else {
-			return "";
-		}
-	}
-	
 }

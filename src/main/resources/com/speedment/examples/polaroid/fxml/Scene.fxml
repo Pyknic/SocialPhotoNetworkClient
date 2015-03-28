@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -25,6 +26,17 @@
                   </Label>
                   <TextField fx:id="search" prefHeight="32.0" prefWidth="480.0" promptText="Find interesting users...">
             </TextField>
+                  <Button fx:id="buttonProfile" graphicTextGap="8.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Firstname Lastname" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
                </children>
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -51,7 +63,7 @@
             <GaussianBlur radius="3.0" />
          </effect>
       </VBox>
-      <Pane fx:id="foreground" layoutX="32.0" layoutY="32.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.1);">
+      <Pane fx:id="foreground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.1);">
          <effect>
             <GaussianBlur radius="32.0" />
          </effect>

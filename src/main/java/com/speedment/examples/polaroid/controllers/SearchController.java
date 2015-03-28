@@ -55,7 +55,6 @@ public class SearchController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		scroll.setOpacity(0);
 		scroll.setVisible(false);
-//		
 		scroll.layoutXProperty().bind(x);
 		scroll.layoutYProperty().bind(y);
 		scroll.prefWidthProperty().bind(width);
