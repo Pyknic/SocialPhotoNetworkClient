@@ -100,6 +100,7 @@ public class Client implements ClientAPI {
 			param("mail", mail),
 			param("firstname", firstname),
 			param("lastname", lastname),
+			param("avatar", imgData),
 			param("sessionkey", sessionKey)
 		))
 		.filter(s -> !s.equals("false"))
