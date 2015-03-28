@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -49,6 +50,7 @@ public class Client implements ClientAPI {
 	@Override
 	public boolean upload(String title, String description, String imgData) {
 		return post(host + "/upload", params(
+			param("title", title),
 			param("description", description),
 			param("imgdata", imgData),
 			param("sessionkey", sessionKey)
