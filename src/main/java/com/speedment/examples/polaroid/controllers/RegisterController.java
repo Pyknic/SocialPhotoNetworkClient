@@ -9,6 +9,7 @@ import com.speedment.examples.polaroid.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,7 +30,7 @@ public class RegisterController implements Initializable {
 	@FXML private Button buttonRegister;
 	@FXML private Label labelError;
 	
-	private BiConsumer<String, String> registerListener;
+	private Consumer<String> registerListener;
 	private BiConsumer<String, String> cancelListener;
 	private final Client client;
 	
@@ -65,7 +66,11 @@ public class RegisterController implements Initializable {
 			
 			if (password.equals(password2)) {
 				if (registerListener != null) {
-					registerListener.accept(mail, password);
+					if (client.register(mail, password)) {
+						registerListener.accept(mail);
+					} else {
+						showError("Could not register with those credentials.");
+					}
 				} else {
 					throw new UnsupportedOperationException(
 						"No RegisterListener is set in RegisterController."
@@ -94,7 +99,7 @@ public class RegisterController implements Initializable {
 		cancelListener = listener;
 	}
 	
-	public void onRegister(BiConsumer<String, String> listener) {
+	public void onRegister(Consumer<String> listener) {
 		registerListener = listener;
 	}
 	

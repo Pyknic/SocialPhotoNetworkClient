@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox fx:id="container" alignment="CENTER" prefHeight="64.0" prefWidth="474.0" spacing="8.0" style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="profileSmall" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="firstAndLastname" layoutX="64.0" layoutY="14.0" text="Firstname Lastname" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="mail" layoutX="64.0" layoutY="31.0" text="example@example.company.com" textFill="WHITE" />
+         </children>
+      </VBox>
+      <Button fx:id="buttonFollow" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #666;" text="Follow" textFill="WHITE" />
+   </children>
+   <padding>
+      <Insets bottom="8.0" left="8.0" right="20.0" top="8.0" />
+   </padding>
+</HBox>

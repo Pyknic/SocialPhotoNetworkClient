@@ -15,10 +15,10 @@ public interface ClientAPI {
 	boolean upload(String title, String description, String imgData);
 	List<JSONUser> find(String freeText);
 	boolean follow(long userId);
-	List<JSONImage> browse(Optional<LocalDateTime> before, Optional<LocalDateTime> after);
+	List<JSONImage> browse(Optional<LocalDateTime> after, Optional<LocalDateTime> before);
 	
-	default List<JSONImage> browse(Optional<LocalDateTime> before) {
-		return browse(before, Optional.empty());
+	default List<JSONImage> browse(Optional<LocalDateTime> after) {
+		return browse(Optional.empty(), after);
 	}
 	
 	default List<JSONImage> browse() {

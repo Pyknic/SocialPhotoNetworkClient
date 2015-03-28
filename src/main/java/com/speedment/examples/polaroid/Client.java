@@ -2,6 +2,7 @@ package com.speedment.examples.polaroid;
 
 import static com.speedment.examples.polaroid.Http.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class Client implements ClientAPI {
 	private final String host;
 	private String sessionKey;
+	private LocalDateTime lastBrowse;
 	
 	public Client(String host) {
 		this.host = host;
@@ -64,17 +66,32 @@ public class Client implements ClientAPI {
 	}
 
 	@Override
-	public List<JSONImage> browse(Optional<LocalDateTime> before, Optional<LocalDateTime> after) {
+	public List<JSONImage> browse(Optional<LocalDateTime> after, Optional<LocalDateTime> before) {
 		return post(host + "/browse", params(
 			param("sessionkey", sessionKey),
 			param("before", before.map(b -> b.toString()).orElse("")),
-			param("after", before.map(b -> b.toString()).orElse(""))
+			param("after", after.map(b -> b.toString()).orElse(""))
 		))
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
-		.map(s -> JSONImage.parse(s)).orElseThrow(() -> 
+		.map(s -> JSONImage.parseFrom(s))
+				
+		.orElseThrow(() -> 
 			new IllegalArgumentException("'browse' did not give any results. Logged in?")
 		);
+	}
+	
+	@Override
+	public List<JSONImage> browse() {
+		final List<JSONImage> result = browse(Optional.ofNullable(lastBrowse));
+		
+		lastBrowse = result.stream()
+			.sorted(Comparator.reverseOrder())
+			.findFirst()
+			.map(i -> i.getUploaded())
+			.orElse(lastBrowse);
+		
+		return result;
 	}
 	
 	private boolean send(String command, String mail, String password) {

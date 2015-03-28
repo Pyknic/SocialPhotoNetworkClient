@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!--  fx:controller="com.speedment.examples.polaroid.SceneController" -->
+<StackPane fx:id="container" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> <!--  fx:controller="com.speedment.examples.polaroid.SceneController" -->
    <children>
       <VBox fx:id="background" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>

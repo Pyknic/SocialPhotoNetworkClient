@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="434.0" spacing="20.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Upload picture!" textAlignment="CENTER" textFill="WHITE">
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect>
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="fieldTitle" promptText="Title">
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </TextField>
+      <ImageView fx:id="fieldImage" fitHeight="280.0" fitWidth="385.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+         <image>
+            <Image url="@../../../../../../../../Public/Pictures/Sample%20Pictures/Desert.jpg" />
+         </image>
+         <effect>
+            <DropShadow color="#00000080" />
+         </effect>
+      </ImageView>
+      <TextArea fx:id="fieldDescription" prefHeight="200.0" prefWidth="200.0" promptText="Write a description" />
+      <HBox alignment="CENTER_RIGHT" spacing="12.0">
+         <children>
+            <Button fx:id="buttonCancel" alignment="CENTER" cancelButton="true" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Cancel" textFill="#bad9ff">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets left="24.0" right="24.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="buttonUpload" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #666;" text="Upload" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <padding>
+                  <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+               </padding>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <Label fx:id="labelError" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Error! Wrong mail or password." textFill="#ff4444" />
+   </children>
+   <effect>
+      <DropShadow color="#00000080" height="20.0" offsetY="2.0" radius="9.5" width="20.0" />
+   </effect>
+   <padding>
+      <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+   </padding>
+</VBox>
