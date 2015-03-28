@@ -50,9 +50,7 @@ public final class ImageResizeUtil {
 
 			g.drawImage(temp, 
 				(int) (maxWidth * 0.5 - temp.getWidth(null) * 0.5), 
-				(int) (maxHeight * 0.5 - temp.getHeight(null) * 0.5), 
-				maxWidth, maxHeight,
-				0, 0, temp.getWidth(null), temp.getHeight(null),
+				(int) (maxHeight * 0.5 - temp.getHeight(null) * 0.5),
 				null
 			);
 
