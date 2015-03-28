@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javafx.scene.image.Image;
 import org.json.simple.JSONArray;
@@ -76,7 +77,7 @@ public class JSONImage implements Comparable<JSONImage> {
 			images.add(img);
 		});
 		
-		Collections.sort(images);
+		Collections.sort(images, Comparator.reverseOrder());
 		
 		return images;
 	}
