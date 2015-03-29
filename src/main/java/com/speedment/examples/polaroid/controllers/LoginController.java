@@ -70,6 +70,7 @@ public class LoginController implements Initializable {
 		});
 		
 		buttonLogin.setOnAction(ev -> {
+			buttonRegister.setDisable(true);
 			final String mail = fieldMail.textProperty().getValue();
 			final String password = fieldPassword.textProperty().getValue();
 			
@@ -84,6 +85,8 @@ public class LoginController implements Initializable {
 					"No ShowRegisterListener is set in LoginController."
 				);
 			}
+			
+			buttonRegister.setDisable(false);
 		});
 		
 		buttonRegister.setOnAction(ev -> {

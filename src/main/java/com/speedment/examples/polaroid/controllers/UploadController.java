@@ -71,6 +71,7 @@ public class UploadController implements Initializable {
 		
 		buttonUpload.setOnAction(ev -> {
 			labelError.setVisible(false);
+			buttonUpload.setDisable(true);
 			onUpload.accept(client.upload(
 				fieldTitle.getText(), 
 				fieldDescription.getText(),
@@ -97,6 +98,7 @@ public class UploadController implements Initializable {
 	public void setError(String msg) {
 		labelError.setText(msg);
 		labelError.setVisible(true);
+		buttonUpload.setDisable(false);
 	}
 	
 	public void setTitle(String title) {

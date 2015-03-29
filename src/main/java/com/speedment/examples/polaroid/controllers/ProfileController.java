@@ -95,6 +95,7 @@ public class ProfileController implements Initializable {
 		
 		buttonSave.setOnAction(ev -> {
 			final String imgData;
+			buttonSave.setDisable(true);
 			
 			if (lastFile != null) {
 				imgData = ImageResizeUtil.loadAndEncode(lastFile, 256, 256);
@@ -113,6 +114,7 @@ public class ProfileController implements Initializable {
 				saveListener.accept(usr);
 			} else {
 				setError("Update was denied!");
+				buttonSave.setDisable(false);
 			}
 		});
 		

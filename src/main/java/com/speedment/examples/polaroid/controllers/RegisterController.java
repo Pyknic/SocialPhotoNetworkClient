@@ -80,6 +80,7 @@ public class RegisterController implements Initializable {
 		});
 		
 		buttonRegister.setOnAction(ev -> {
+			buttonRegister.setDisable(true);
 			final String mail = fieldMail.textProperty().getValue();
 			final String password = fieldPassword.textProperty().getValue();
 			final String password2 = fieldPasswordRepeat.textProperty().getValue();
@@ -99,6 +100,8 @@ public class RegisterController implements Initializable {
 			} else {
 				showError("Passwords doesn't match.");
 			}
+			
+			buttonRegister.setDisable(false);
 		});
 		
 		buttonCancel.setOnAction(ev -> {
