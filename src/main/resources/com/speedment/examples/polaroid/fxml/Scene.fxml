@@ -15,7 +15,7 @@
          <children>
             <HBox fx:id="searchParent" alignment="CENTER" spacing="20.0" style="-fx-background-color: #444;">
                <children>
-                  <Label text="Polaroid Social Network" textFill="#e0a66e">
+                  <Label text="Social Photo Network" textFill="#e0a66e">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>

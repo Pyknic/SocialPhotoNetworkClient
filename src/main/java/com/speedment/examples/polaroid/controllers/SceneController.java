@@ -105,7 +105,7 @@ public class SceneController implements Initializable {
 	private void enableDragging() {
 		final Scene scene = container.getScene();
 		scene.setOnDragOver(ev -> handleOver(ev));
-		scene.setOnDragDropped(ev -> handleDrop(ev, f -> showUpload(f)));
+		scene.setOnDragDropped(ev -> handleDrop(ev, f -> showUpload(f), true));
 	}
 	
 	private void whenLoggedIn() {
@@ -196,6 +196,7 @@ public class SceneController implements Initializable {
 	public void showUpload(File file) {
 		final UploadController controller = new UploadController(client);
 		final VBox popup = showFXMLPopup("Upload.fxml", controller);
+		controller.setTitle(file.getName());
 		
 		controller.onUpload(success -> {
 			if (success) {

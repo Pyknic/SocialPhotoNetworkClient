@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import static javafx.scene.input.TransferMode.COPY;
@@ -44,21 +45,33 @@ public class DropHelper {
 	}
 	
 	public static void handleDrop(DragEvent ev, Consumer<File> ifValid) {
+		handleDrop(ev, ifValid, false);
+	}
+	
+	public static void handleDrop(DragEvent ev, Consumer<File> ifValid, boolean multi) {
 		final Dragboard db = ev.getDragboard();
 		boolean success = false;
 
 		if (db.hasFiles()) {
 			success = true;
 
-			db.getFiles().stream()
-				.filter(f -> f.isFile())
-				.filter(f -> ACCEPTED_EXTENSIONS.contains(extensionOf(f)))
-				.findFirst()
-				.ifPresent(f -> ifValid.accept(f));
+			final Stream<File> files = db.getFiles().stream()
+				.filter(File::isFile)
+				.filter(DropHelper::isExtensionAccepted);
+			
+			if (multi) {
+				files.forEach(ifValid);
+			} else {
+				files.findFirst().ifPresent(ifValid);
+			}
 		}
 
 		ev.setDropCompleted(success);
 		ev.consume();
+	}
+	
+	public static boolean isExtensionAccepted(File file) {
+		return ACCEPTED_EXTENSIONS.contains(extensionOf(file).toLowerCase());
 	}
 	
 	private static String extensionOf(File file) {

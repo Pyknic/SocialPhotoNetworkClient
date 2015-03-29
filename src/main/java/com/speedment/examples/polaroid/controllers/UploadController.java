@@ -99,6 +99,10 @@ public class UploadController implements Initializable {
 		labelError.setVisible(true);
 	}
 	
+	public void setTitle(String title) {
+		fieldTitle.setText(title);
+	}
+	
 	public void loadFile(File file) {
 		try {
 			final Image img = new Image(new FileInputStream(file));
