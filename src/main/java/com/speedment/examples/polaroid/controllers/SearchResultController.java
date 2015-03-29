@@ -85,6 +85,15 @@ public class SearchResultController implements Initializable {
 					container.getChildren().add(success);
 					FadeAnimation.fadeIn(success);
 				});
+			} else {
+				final Label success = new Label("Already followed!");
+				success.setStyle("-fx-text-fill: rgb(255, 200, 160);");
+				success.setOpacity(0);
+				FadeAnimation.fadeOut(buttonFollow, e -> {
+					container.getChildren().remove(buttonFollow);
+					container.getChildren().add(success);
+					FadeAnimation.fadeIn(success);
+				});
 			}
 		});
 	}
