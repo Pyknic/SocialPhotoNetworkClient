@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
@@ -7,9 +8,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #666;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="container" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #666;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="picture" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER" />
+      <ImageView fx:id="picture" fitHeight="160.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ImageView>
       <Label fx:id="title" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" style="-fx-background-color: rgba(0,0,0,0.5);" text="Label" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
          <padding>
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />

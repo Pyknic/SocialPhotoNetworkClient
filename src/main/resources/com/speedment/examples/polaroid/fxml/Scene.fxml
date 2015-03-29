@@ -15,7 +15,7 @@
          <children>
             <HBox fx:id="searchParent" alignment="CENTER" spacing="20.0" style="-fx-background-color: #444;">
                <children>
-                  <Label text="Social Photo Network" textFill="#e0a66e">
+                  <Label text="Social Photo Network" textFill="#fff">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
@@ -48,7 +48,7 @@
                <children>
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefViewportHeight="632.0" prefViewportWidth="980.0" style="-fx-background-color: transparent;">
                      <content>
-                        <TilePane fx:id="tilepanel" hgap="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefColumns="4" prefHeight="200.0" prefRows="20" prefTileHeight="256.0" prefTileWidth="256.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="12.0">
+                        <TilePane fx:id="tilepanel" hgap="4.0" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefColumns="8" prefHeight="200.0" prefRows="20" prefTileHeight="160.0" prefTileWidth="160.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #404040, #202020);" vgap="16.0">
                            <padding>
                               <Insets bottom="24.0" left="64.0" right="64.0" top="24.0" />
                            </padding>

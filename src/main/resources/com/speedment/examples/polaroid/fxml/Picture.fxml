@@ -10,7 +10,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox fx:id="container" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="8.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Picture title" textAlignment="CENTER" textFill="WHITE">
@@ -35,12 +34,12 @@
             <Insets />
          </VBox.margin>
       </ImageView>
-      <Label fx:id="description" prefWidth="512.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum, turpis dapibus pretium commodo, lorem tellus vestibulum enim, eget gravida dui ipsum vel leo. Nullam ut tortor at odio porttitor ultricies vitae a velit. Quisque lacinia mattis nibh et tempor. Mauris fringilla nibh a urna vehicula, id scelerisque velit feugiat. Mauris ut neque iaculis, cursus quam vel, interdum erat. Mauris lacinia ligula nibh. Integer quis dolor enim. Phasellus posuere neque a lorem finibus venenatis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eget lacus lorem. Maecenas purus odio, semper in lacinia iaculis, imperdiet ac ipsum. Donec varius porta sem eu rhoncus. Vivamus imperdiet tempus nisi, vel euismod sapien tempus at." textAlignment="JUSTIFY" textFill="#888888" wrapText="true">
+      <Label fx:id="description" prefWidth="256.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum, turpis dapibus pretium commodo, lorem tellus vestibulum enim, eget gravida dui ipsum vel leo. Nullam ut tortor at odio porttitor ultricies vitae a velit. Quisque lacinia mattis nibh et tempor. Mauris fringilla nibh a urna vehicula, id scelerisque velit feugiat. Mauris ut neque iaculis, cursus quam vel, interdum erat. Mauris lacinia ligula nibh. Integer quis dolor enim. Phasellus posuere neque a lorem finibus venenatis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse eget lacus lorem. Maecenas purus odio, semper in lacinia iaculis, imperdiet ac ipsum. Donec varius porta sem eu rhoncus. Vivamus imperdiet tempus nisi, vel euismod sapien tempus at." textAlignment="JUSTIFY" textFill="#cccccc" wrapText="true">
          <effect>
             <DropShadow color="#00000080" height="8.0" radius="3.5" width="8.0" />
          </effect>
       </Label>
-      <Label fx:id="meta" prefWidth="512.0" text="Uploaded 2015-03-28 20:21 by Emil Forslund." textFill="#222222" wrapText="true" />
+      <Label fx:id="meta" prefWidth="256.0" text="Uploaded 2015-03-28 20:21 by Emil Forslund." textFill="#878787" wrapText="true" />
       <HBox alignment="TOP_RIGHT">
          <children>
             <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Cancel" textFill="#bad9ff">

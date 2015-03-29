@@ -16,15 +16,20 @@
  */
 package com.speedment.examples.polaroid.controllers;
 
-import com.speedment.examples.polaroid.Client;
 import com.speedment.examples.polaroid.JSONImage;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import static javafx.animation.Interpolator.EASE_BOTH;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -33,6 +38,7 @@ import javafx.scene.image.ImageView;
  */
 public class ThumbnailController implements Initializable {
 	
+	@FXML private StackPane container;
 	@FXML private ImageView picture;
 	@FXML private Label title;
 
@@ -46,6 +52,18 @@ public class ThumbnailController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		final KeyFrame 
+			kfFocus0 = frame(0, 1),
+			kfFocus1 = frame(0.1, 1.05),
+			kfBlur0  = frame(0, 1.05),
+			kfBlur1  = frame(0.1, 1);
+
+		final Timeline 
+			focus = new Timeline(kfFocus0, kfFocus1),
+			blur  = new Timeline(kfBlur0, kfBlur1);
+
+		picture.setOnMouseEntered(ev -> focus.play());
+		picture.setOnMouseExited(ev -> blur.play());
 		picture.setOnMousePressed(ev -> {
 			if (ev.isPrimaryButtonDown()) {
 				clickListener.accept(img);
@@ -55,11 +73,19 @@ public class ThumbnailController implements Initializable {
 	
 	public void fromJSON(JSONImage img) {
 		this.img = img;
+		
 		picture.setImage(img.getImage());
 		title.textProperty().setValue(img.getTitle());
 	}
 	
 	public void onClick(Consumer<JSONImage> listener) {
 		clickListener = listener;
+	}
+	
+	private KeyFrame frame(double seconds, double scale) {
+		return new KeyFrame(Duration.seconds(seconds),
+			new KeyValue(container.scaleXProperty(), scale, EASE_BOTH),
+			new KeyValue(container.scaleYProperty(), scale, EASE_BOTH)
+		);
 	}
 }

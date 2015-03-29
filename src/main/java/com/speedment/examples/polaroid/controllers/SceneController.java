@@ -21,7 +21,6 @@ import com.speedment.examples.polaroid.JSONImage;
 import com.speedment.examples.polaroid.JSONUser;
 import static com.speedment.examples.polaroid.MainApp.PATH;
 import com.speedment.examples.polaroid.Settings;
-import com.speedment.examples.polaroid.util.Avatar;
 import static com.speedment.examples.polaroid.util.Avatar.DEFAULT_AVATAR_IMG;
 import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
 import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
@@ -31,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -110,7 +111,7 @@ public class SceneController implements Initializable {
 	
 	private void whenLoggedIn() {
 		browseAndAppend();
-		foreground.setVisible(false);
+		container.getChildren().remove(foreground);
 		background.setEffect(null);
 		enableDragging();
 		updateProfileButton();
@@ -152,103 +153,91 @@ public class SceneController implements Initializable {
 	
 	public void showLogin(String mail, String password) {
 		final LoginController controller = new LoginController(client);
-		final VBox popup = showFXMLPopup("Login.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Login.fxml", controller);
 		controller.setMail(mail);
 		controller.setPassword(password);
 		
-		controller.onLogin(m -> {
-			FadeAnimation.fadeOut(popup, 
-				ev -> container.getChildren().remove(popup)
-			);
-			whenLoggedIn();
-		});
+		controller.onLogin(m -> closeHandler.accept(b -> 
+			whenLoggedIn()
+		));
 
-		controller.onShowRegister((m, p) -> {
-			FadeAnimation.fadeOut(popup, 
-				ev -> container.getChildren().remove(popup)
-			);
-			showRegister(m, p);
-		});
+		controller.onShowRegister((m, p) -> closeHandler.accept(b -> 
+			showRegister(m, p)
+		));
 	}
 
 	public void showRegister(String mail, String password) {
 		final RegisterController controller = new RegisterController(client);
-		final VBox popup = showFXMLPopup("Register.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Register.fxml", controller);
 		
 		controller.setMail(mail);
 		controller.setPassword(password);
 		
 		controller.onRegister(success -> {
-			FadeAnimation.fadeOut(popup, 
-				ev -> container.getChildren().remove(popup)
-			);
+			closeHandler.accept(b -> {});
 			whenLoggedIn();
 		});
-
-		controller.onCancel((m, p) -> {
-			FadeAnimation.fadeOut(popup, 
-				ev -> container.getChildren().remove(popup)
-			);
-			showLogin(m, p);
-		});
+		
+		controller.onCancel((m, p) -> 
+			closeHandler.accept(b -> 
+				showLogin(m, p)
+			)
+		);
 	}
 	
 	public void showUpload(File file) {
 		final UploadController controller = new UploadController(client);
-		final VBox popup = showFXMLPopup("Upload.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Upload.fxml", controller);
 		controller.setTitle(file.getName());
 		
 		controller.onUpload(success -> {
 			if (success) {
-				FadeAnimation.fadeOut(popup, ev -> {
-					container.getChildren().remove(popup);
-					browseAndAppend();
-				});
+				closeHandler.accept(b -> 
+					browseAndAppend()
+				);
 			} else {
 				controller.setError("Error! Upload failed.");
-			}
+			}	
 		});
 		
-		controller.onCancel(success -> {
-			FadeAnimation.fadeOut(popup, ev -> {
-					container.getChildren().remove(popup);
-				}
-			);
-		});
-		
+		controller.onCancel(s -> closeHandler.accept(b -> {}));
 		controller.loadFile(file);
 	}
 	
 	public void showProfile(JSONUser user) {
 		final ProfileController controller = new ProfileController(user, client);
-		final VBox popup = showFXMLPopup("Profile.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Profile.fxml", controller);
 		
-		controller.onSave(usr -> {
-			FadeAnimation.fadeOut(popup, ev -> {
-				container.getChildren().remove(popup);
-				updateProfileButton();
-			});
-		});
+		controller.onSave(usr -> 
+			closeHandler.accept(b -> updateProfileButton())
+		);
 		
-		controller.onCancel(success -> {
-			FadeAnimation.fadeOut(popup, ev -> {
-				container.getChildren().remove(popup);
-			});
-		});
+		controller.onCancel(success -> 
+			closeHandler.accept(b -> {})
+		);
 	}
 	
 	public void showPicture(JSONImage img) {
-		final PictureController controller = new PictureController(img);
-		final VBox popup = showFXMLPopup("Picture.fxml", controller);
+		foreground.setVisible(false);
+		container.getChildren().add(foreground);
 		
-		controller.onCancel(success -> {
-			FadeAnimation.fadeOut(popup, ev -> {
-				container.getChildren().remove(popup);
-			});
-		});
+		final PictureController controller = new PictureController(img);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Picture.fxml", controller);
+
+		controller.onCancel(success -> closeHandler.accept(b -> {}));
 	}
 	
-	private VBox showFXMLPopup(String name, Object controller) {
+	/**
+	 * 
+	 * @param name
+	 * @param controller
+	 * @return close handler.
+	 */
+	private Consumer<Consumer<VBox>> showFXMLPopup(String name, Object controller) {
+		foreground.setVisible(false);
+		container.getChildren().remove(foreground);
+		container.getChildren().add(foreground);
+		
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/" + name));
 			loader.setController(controller);
@@ -258,14 +247,32 @@ public class SceneController implements Initializable {
 			container.getChildren().add(box);
 			LayoutUtil.centerInParent(box);
 			FadeAnimation.fadeIn(box);
-			return box;
+			
+			foreground.setOpacity(0);
+			foreground.setStyle("-fx-background-color:rgba(0,0,0,0.5);");
+			foreground.setVisible(true);
+			
+			final Consumer<Consumer<VBox>> closeHandler = c -> {
+				FadeAnimation.fadeOut(box, e -> {
+					container.getChildren().remove(box);
+				});
+				FadeAnimation.fadeOut(foreground, e -> {
+					container.getChildren().remove(foreground);
+				});
+				c.accept(box);
+			};
+			
+			foreground.setOnMousePressed(ev -> closeHandler.accept(b -> {}));
+			FadeAnimation.fadeIn(foreground);
+			
+			return closeHandler;
 		} catch (IOException ex) {
 			Logger.getLogger(SceneController.class.getName()).log(
 				Level.SEVERE, "Could not find '" + name + "'.", ex
 			);
 		}
 		
-		return null;
+		return c -> {};
 	}
 	
 	public StackPane showImage(JSONImage img) {
@@ -292,7 +299,7 @@ public class SceneController implements Initializable {
 				client.browse().stream()
 				.map(i -> showImage(i))
 				.map(i -> {
-					i.setRotate(Math.random() * 20 - 10);
+					i.setRotate(Math.random() * 10 - 5);
 					return i;
 				})
 				.collect(Collectors.toList())
