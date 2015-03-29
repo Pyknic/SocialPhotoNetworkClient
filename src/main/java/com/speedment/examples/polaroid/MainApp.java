@@ -39,7 +39,7 @@ public class MainApp extends Application {
 		
         scene.getStylesheets().add(PATH + "/styles/Styles.css");
         
-        stage.setTitle("Polaroid Social Network");
+        stage.setTitle("Social Photo Network");
         stage.setMaximized(true);
 		stage.setScene(scene);
         stage.show();
