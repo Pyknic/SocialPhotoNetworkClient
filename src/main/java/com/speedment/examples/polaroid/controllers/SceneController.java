@@ -235,9 +235,10 @@ public class SceneController implements Initializable {
 	 */
 	private Consumer<Consumer<VBox>> showFXMLPopup(String name, Object controller) {
 		foreground.setVisible(false);
-		container.getChildren().remove(foreground);
-		container.getChildren().add(foreground);
-		
+		if (!container.getChildren().contains(foreground)) {
+			container.getChildren().add(foreground);
+		}
+
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/" + name));
 			loader.setController(controller);
