@@ -21,11 +21,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.speedment.examples</groupId>
-    <artifactId>Polaroid</artifactId>
+    <artifactId>SocialPhotoNetworkClient</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Polaroid</name>
+    <name>Social Photo Network - Client</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
