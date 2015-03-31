@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.JSONImage;
+import com.speedment.examples.social.JSONImage;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;

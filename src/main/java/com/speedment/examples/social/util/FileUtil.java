@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.util;
+package com.speedment.examples.social.util;
 
 import java.io.BufferedWriter;
 import java.io.File;

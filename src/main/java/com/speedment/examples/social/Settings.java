@@ -14,22 +14,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid;
+package com.speedment.examples.social;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 /**
  * Singleton.
@@ -90,7 +83,7 @@ public final class Settings {
 	
 	private void storeChanges() {
 		try (final OutputStream out = new FileOutputStream(SETTINGS_FILE, false)) {
-			props.store(out, "Polaroid Settings");
+			props.store(out, "Social Photo Network Settings");
 		} catch (IOException ex) {
 			throw new RuntimeException(
 				"Could not save file '" + filename() + "'."

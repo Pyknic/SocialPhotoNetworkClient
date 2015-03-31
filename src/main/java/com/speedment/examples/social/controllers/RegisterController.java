@@ -19,10 +19,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.Client;
-import com.speedment.examples.polaroid.util.LayoutUtil;
+import com.speedment.examples.social.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;

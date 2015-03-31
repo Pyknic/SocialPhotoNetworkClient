@@ -14,24 +14,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.Client;
-import com.speedment.examples.polaroid.JSONImage;
-import com.speedment.examples.polaroid.JSONUser;
-import static com.speedment.examples.polaroid.MainApp.PATH;
-import com.speedment.examples.polaroid.Settings;
-import static com.speedment.examples.polaroid.util.Avatar.DEFAULT_AVATAR_IMG;
-import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
-import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
-import com.speedment.examples.polaroid.util.FadeAnimation;
-import com.speedment.examples.polaroid.util.LayoutUtil;
+import com.speedment.examples.social.Client;
+import com.speedment.examples.social.JSONImage;
+import com.speedment.examples.social.JSONUser;
+import static com.speedment.examples.social.MainApp.PATH;
+import com.speedment.examples.social.Settings;
+import static com.speedment.examples.social.util.Avatar.DEFAULT_AVATAR_IMG;
+import static com.speedment.examples.social.util.DropHelper.handleDrop;
+import static com.speedment.examples.social.util.DropHelper.handleOver;
+import com.speedment.examples.social.util.FadeAnimation;
+import com.speedment.examples.social.util.LayoutUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -153,7 +152,7 @@ public class SceneController implements Initializable {
 	
 	public void showLogin(String mail, String password) {
 		final LoginController controller = new LoginController(client);
-		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Login.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Login.fxml", controller, false);
 		controller.setMail(mail);
 		controller.setPassword(password);
 		
@@ -168,7 +167,7 @@ public class SceneController implements Initializable {
 
 	public void showRegister(String mail, String password) {
 		final RegisterController controller = new RegisterController(client);
-		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Register.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Register.fxml", controller, false);
 		
 		controller.setMail(mail);
 		controller.setPassword(password);
@@ -187,7 +186,7 @@ public class SceneController implements Initializable {
 	
 	public void showUpload(File file) {
 		final UploadController controller = new UploadController(client);
-		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Upload.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Upload.fxml", controller, true);
 		controller.setTitle(file.getName());
 		
 		controller.onUpload(success -> {
@@ -206,7 +205,7 @@ public class SceneController implements Initializable {
 	
 	public void showProfile(JSONUser user) {
 		final ProfileController controller = new ProfileController(user, client);
-		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Profile.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Profile.fxml", controller, true);
 		
 		controller.onSave(usr -> 
 			closeHandler.accept(b -> updateProfileButton())
@@ -222,7 +221,7 @@ public class SceneController implements Initializable {
 		container.getChildren().add(foreground);
 		
 		final PictureController controller = new PictureController(img);
-		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Picture.fxml", controller);
+		final Consumer<Consumer<VBox>> closeHandler = showFXMLPopup("Picture.fxml", controller, true);
 
 		controller.onCancel(success -> closeHandler.accept(b -> {}));
 	}
@@ -233,7 +232,7 @@ public class SceneController implements Initializable {
 	 * @param controller
 	 * @return close handler.
 	 */
-	private Consumer<Consumer<VBox>> showFXMLPopup(String name, Object controller) {
+	private Consumer<Consumer<VBox>> showFXMLPopup(String name, Object controller, boolean closeable) {
 		foreground.setVisible(false);
 		if (!container.getChildren().contains(foreground)) {
 			container.getChildren().add(foreground);
@@ -263,7 +262,11 @@ public class SceneController implements Initializable {
 				c.accept(box);
 			};
 			
-			foreground.setOnMousePressed(ev -> closeHandler.accept(b -> {}));
+			if (closeable) {
+				foreground.setOnMousePressed(ev -> closeHandler.accept(b -> {}));
+			} else {
+				foreground.setOnMousePressed(null);
+			}
 			FadeAnimation.fadeIn(foreground);
 			
 			return closeHandler;

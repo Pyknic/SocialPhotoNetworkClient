@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid;
+package com.speedment.examples.social;
 
-import static com.speedment.examples.polaroid.util.Base64Util.fromBase64;
+import static com.speedment.examples.social.util.Base64Util.fromBase64;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

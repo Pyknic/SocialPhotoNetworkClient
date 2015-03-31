@@ -14,15 +14,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid;
+package com.speedment.examples.social;
 
-import static com.speedment.examples.polaroid.Http.*;
+import static com.speedment.examples.social.Http.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  *

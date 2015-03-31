@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.ClientAPI;
-import static com.speedment.examples.polaroid.util.DropHelper.handleDrop;
-import static com.speedment.examples.polaroid.util.DropHelper.handleOver;
-import com.speedment.examples.polaroid.util.ImageResizeUtil;
+import com.speedment.examples.social.ClientAPI;
+import static com.speedment.examples.social.util.DropHelper.handleDrop;
+import static com.speedment.examples.social.util.DropHelper.handleOver;
+import com.speedment.examples.social.util.ImageResizeUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

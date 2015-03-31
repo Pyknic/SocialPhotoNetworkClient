@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid;
+package com.speedment.examples.social;
 
-import com.speedment.examples.polaroid.controllers.SceneController;
+import com.speedment.examples.social.controllers.SceneController;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 	
-	public final static String PATH = "/com/speedment/examples/polaroid";
+	public final static String PATH = "/com/speedment/examples/social";
 
     @Override
     public void start(Stage stage) throws Exception {

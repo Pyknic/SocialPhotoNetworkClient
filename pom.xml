@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-		<mainClass>com.speedment.examples.polaroid.MainApp</mainClass>
+		<mainClass>com.speedment.examples.social.MainApp</mainClass>
 	</properties>
 
     <organization>
@@ -136,6 +136,7 @@
                         <exclude>**/README</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
+						<exclude>**.properties</exclude>
                     </excludes>
                 </configuration>
                 <executions>

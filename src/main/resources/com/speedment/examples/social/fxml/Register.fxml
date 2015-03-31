@@ -10,7 +10,7 @@
 
 <VBox fx:id="container" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="314.0" prefWidth="326.0" spacing="20.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Welcome to Polaroid!" textAlignment="CENTER" textFill="WHITE">
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Welcome to Social Photo Network!" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="24.0" />
          </font>

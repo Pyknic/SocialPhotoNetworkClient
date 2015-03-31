@@ -14,10 +14,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.Client;
-import com.speedment.examples.polaroid.util.LayoutUtil;
+import com.speedment.examples.social.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.BiConsumer;

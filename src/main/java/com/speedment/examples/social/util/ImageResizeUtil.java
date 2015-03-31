@@ -14,9 +14,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.util;
+package com.speedment.examples.social.util;
 
-import com.speedment.examples.polaroid.JSONImage;
+import com.speedment.examples.social.JSONImage;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.Graphics2D;
 import java.awt.Image;

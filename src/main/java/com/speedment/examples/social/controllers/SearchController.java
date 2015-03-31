@@ -14,12 +14,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.speedment.examples.polaroid.controllers;
+package com.speedment.examples.social.controllers;
 
-import com.speedment.examples.polaroid.ClientAPI;
-import com.speedment.examples.polaroid.JSONUser;
-import static com.speedment.examples.polaroid.MainApp.PATH;
-import com.speedment.examples.polaroid.util.FadeAnimation;
+import com.speedment.examples.social.ClientAPI;
+import com.speedment.examples.social.JSONUser;
+import static com.speedment.examples.social.MainApp.PATH;
+import com.speedment.examples.social.util.FadeAnimation;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
