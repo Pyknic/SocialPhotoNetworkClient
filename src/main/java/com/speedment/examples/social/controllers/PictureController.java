@@ -62,8 +62,8 @@ public class PictureController implements Initializable {
 		meta.setText("Uploaded " + 
 			img.getUploaded().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 				.replace("T", " ") + 
-			" by " + img.getUploadedBy().getFirstname() + 
-			" " + img.getUploadedBy().getLastname() + "."
+			" by " + img.getUploader().getFirstname() + 
+			" " + img.getUploader().getLastname() + "."
 		);
 		
 		buttonCancel.setOnAction(ev -> {

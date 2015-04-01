@@ -30,63 +30,69 @@ import org.json.simple.JSONValue;
  * @author Emil Forslund
  */
 public class JSONUser {
-	
-	private long id;
-	private String mail;
-	private String firstname;
-	private String lastname;
-	private Image avatar;
-	
-	private JSONUser() {}
 
-	public long getId() {
-		return id;
-	}
+    private long id;
+    private String mail;
+    private String firstname;
+    private String lastname;
+    private Image avatar;
 
-	public String getMail() {
-		return mail;
-	}
+    private JSONUser() {
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
-	
-	public Image getAvatar() {
-		return avatar;
-	}
-	
-	public static List<JSONUser> parse(String json) {
-		final JSONObject container = (JSONObject) JSONValue.parse(json);
-		final JSONArray array	   = (JSONArray) container.get("users");
-		final List<JSONUser> users = new ArrayList<>();
-		
-		array.stream().forEach(u -> {
-			users.add(parse((JSONObject) u));
-		});
-		
-		return users;
-	}
-	
-	public static JSONUser parseOne(String json) {
-		return parse((JSONObject) JSONValue.parse(json));
-	}
-	
-	public static JSONUser parse(JSONObject user) {
-		final JSONUser usr = new JSONUser();
-		usr.id        = Long.parseLong(user.get("id").toString());
-		usr.mail      = user.get("mail").toString();
-		usr.firstname = user.get("firstname").toString();
-		usr.lastname  = user.get("lastname").toString();
-		usr.avatar    = Optional.ofNullable(user.get("avatar"))
-			.map(Object::toString)
-			.filter(s -> !s.isEmpty())
-			.map(s -> fromBase64(s))
-			.orElse(null);
-		
-		return usr;
-	}
+    public String getMail() {
+        return mail;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public Image getAvatar() {
+        return avatar;
+    }
+
+    public static List<JSONUser> parse(String json) {
+        final JSONObject container = (JSONObject) JSONValue.parse(json);
+        final JSONArray array = (JSONArray) container.get("users");
+        final List<JSONUser> users = new ArrayList<>();
+
+        array.stream().forEach(u -> {
+            users.add(parse((JSONObject) u));
+        });
+
+        return users;
+    }
+
+    public static JSONUser parseOne(String json) {
+        return parse((JSONObject) JSONValue.parse(json));
+    }
+
+    public static JSONUser parse(JSONObject user) {
+        final JSONUser usr = new JSONUser();
+        usr.id = Long.parseLong(user.get("id").toString());
+        usr.mail = user.get("mail").toString();
+        usr.firstname = mapToString(user, "firstName");
+        usr.lastname = mapToString(user, "lastName");
+        usr.avatar = Optional.ofNullable(user.get("avatar"))
+                .map(Object::toString)
+                .filter(s -> !s.isEmpty())
+                .map(s -> fromBase64(s))
+                .orElse(null);
+
+        return usr;
+    }
+    
+    private static String mapToString(JSONObject user, String key) {
+        return Optional.ofNullable(user.get(key)).map(Object::toString).orElse(null);
+    }
+    
 }

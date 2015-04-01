@@ -36,7 +36,7 @@ public class JSONImage implements Comparable<JSONImage> {
 	private String title, description;
 	private Image image;
 	private LocalDateTime uploaded;
-	private JSONUser uploadedBy;
+	private JSONUser uploader;
 	
 	private JSONImage() {}
 	
@@ -56,8 +56,8 @@ public class JSONImage implements Comparable<JSONImage> {
 		return uploaded;
 	}
 	
-	public JSONUser getUploadedBy() {
-		return uploadedBy;
+	public JSONUser getUploader() {
+		return uploader;
 	}
 	
 	public static List<JSONImage> parseFrom(String json) {
@@ -72,8 +72,8 @@ public class JSONImage implements Comparable<JSONImage> {
 			img.title		= obj.get("title").toString();
 			img.description = obj.get("description").toString();
 			img.uploaded	= LocalDateTime.parse(obj.get("uploaded").toString().trim().replace(" ", "T"));
-			img.uploadedBy  = JSONUser.parse((JSONObject) obj.get("uploadedby"));
-			img.image       = fromBase64(obj.get("imgdata").toString());
+			img.uploader  = JSONUser.parse((JSONObject) obj.get("uploader"));
+			img.image       = fromBase64(obj.get("imgData").toString());
 			images.add(img);
 		});
 		
