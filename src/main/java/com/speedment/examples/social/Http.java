@@ -98,7 +98,8 @@ public class Http {
 			return Optional.ofNullable(response.toString().trim());
 
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			catcher.accept(ex);
 			return Optional.empty();
 		} finally {
 			if (connection != null) {

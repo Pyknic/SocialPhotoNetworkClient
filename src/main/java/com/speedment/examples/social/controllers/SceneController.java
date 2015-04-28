@@ -80,7 +80,7 @@ public class SceneController implements Initializable {
 		this.client = new Client(
 			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
 			Settings.inst().get("port", "8080"),
-			t -> showDialog(container, "Http error!", t.getMessage())
+			t -> showDialog(container, t.getClass().getSimpleName(), t.getMessage())
 		);
 	}
 
