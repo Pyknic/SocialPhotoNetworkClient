@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
@@ -104,15 +105,15 @@ public class ProfileController implements Initializable {
 				imgData = "";
 			}
 			
-			final JSONUser usr = client.update(
+			final Optional<JSONUser> usr = client.update(
 				fieldMail.getText(), 
 				fieldFirstname.getText(), 
 				fieldLastname.getText(), 
 				imgData
 			);
 			
-			if (usr != null && saveListener != null) {
-				saveListener.accept(usr);
+			if (usr.isPresent() && saveListener != null) {
+				saveListener.accept(usr.get());
 			} else {
 				setError("Update was denied!");
 				buttonSave.setDisable(false);

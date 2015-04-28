@@ -30,8 +30,8 @@ public interface ClientAPI {
 	boolean login(String mail, String password);
 	boolean upload(String title, String description, String imgData);
 	List<JSONUser> find(String freeText);
-	JSONUser self();
-	JSONUser update(String mail, String firstname, String lastname, String imgData);
+	Optional<JSONUser> self();
+	Optional<JSONUser> update(String mail, String firstname, String lastname, String imgData);
 	boolean follow(long userId);
 	List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to);
 	

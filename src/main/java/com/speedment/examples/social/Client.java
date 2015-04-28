@@ -76,14 +76,13 @@ public class Client implements ClientAPI {
 	}
 	
 	@Override
-	public JSONUser self() {
+	public Optional<JSONUser> self() {
 		return post(host + "/self", params(
 			param("sessionkey", sessionKey)
 		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parseOne(s))
-		.get();
+		.map(s -> JSONUser.parseOne(s));
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class Client implements ClientAPI {
 	}
 	
 	@Override
-	public JSONUser update(String mail, String firstname, String lastname, String imgData) {
+	public Optional<JSONUser> update(String mail, String firstname, String lastname, String imgData) {
 		return post(host + "/update", params(
 			param("mail", mail),
 			param("firstname", firstname),
@@ -108,8 +107,7 @@ public class Client implements ClientAPI {
 		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parseOne(s))
-		.get();
+		.map(s -> JSONUser.parseOne(s));
 	}
 
 	@Override

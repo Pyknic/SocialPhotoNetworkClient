@@ -30,6 +30,7 @@ import com.speedment.examples.social.util.LayoutUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -102,46 +103,6 @@ public class SceneController implements Initializable {
 		Platform.runLater(() -> {
 			searchParent.requestFocus();
 		});
-	}
-	
-	private void enableDragging() {
-		final Scene scene = container.getScene();
-		scene.setOnDragOver(ev -> handleOver(ev));
-		scene.setOnDragDropped(ev -> handleDrop(ev, f -> showUpload(f), true));
-	}
-	
-	private void whenLoggedIn() {
-		browseAndAppend();
-		container.getChildren().remove(foreground);
-		background.setEffect(null);
-		enableDragging();
-		updateProfileButton();
-		
-		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), ev -> 
-			browseAndAppend()
-		));
-		
-		refresh.setCycleCount(INDEFINITE);
-		refresh.play();
-	}
-	
-	private void updateProfileButton() {
-		final JSONUser user = client.self();
-		buttonProfile.setText(user.getFirstname() + " " + user.getLastname());
-		
-		final ImageView icon;
-		if (user.getAvatar() == null) {
-			icon = new ImageView(DEFAULT_AVATAR_IMG);
-		} else {
-			icon = new ImageView(user.getAvatar());
-		}
-
-		icon.setFitWidth(32);
-		icon.setFitHeight(32);
-		buttonProfile.setGraphic(icon);
-		buttonProfile.setOnAction(ev -> showProfile(user));
-		
-		Settings.inst().set("mail", user.getMail());
 	}
 	
 	///////////////////////////////////////////////////////////////
@@ -330,5 +291,51 @@ public class SceneController implements Initializable {
 		}
 		
 		return null;
+	}
+	
+	private void enableDragging() {
+		final Scene scene = container.getScene();
+		scene.setOnDragOver(ev -> handleOver(ev));
+		scene.setOnDragDropped(ev -> handleDrop(ev, f -> showUpload(f), true));
+	}
+	
+	private void whenLoggedIn() {
+		browseAndAppend();
+		container.getChildren().remove(foreground);
+		background.setEffect(null);
+		enableDragging();
+		updateProfileButton();
+		
+		final Timeline refresh = new Timeline(new KeyFrame(Duration.seconds(10), ev -> 
+			browseAndAppend()
+		));
+		
+		refresh.setCycleCount(INDEFINITE);
+		refresh.play();
+	}
+	
+	private void updateProfileButton() {
+		final Optional<JSONUser> user = client.self();
+		
+		if (user.isPresent()) {
+			buttonProfile.setText(
+				user.get().getFirstname() + " " + 
+				user.get().getLastname()
+			);
+
+			final ImageView icon;
+			if (user.get().getAvatar() == null) {
+				icon = new ImageView(DEFAULT_AVATAR_IMG);
+			} else {
+				icon = new ImageView(user.get().getAvatar());
+			}
+
+			icon.setFitWidth(32);
+			icon.setFitHeight(32);
+			buttonProfile.setGraphic(icon);
+			buttonProfile.setOnAction(ev -> showProfile(user.get()));
+
+			Settings.inst().set("mail", user.get().getMail());
+		}
 	}
 }
