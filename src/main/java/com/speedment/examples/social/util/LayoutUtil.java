@@ -17,6 +17,7 @@
 package com.speedment.examples.social.util;
 
 import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 /**
@@ -45,6 +46,18 @@ public class LayoutUtil {
 		} else {
 			throw new UnsupportedOperationException("Parent " + parent + " is not a Region.");
 		}
+	}
+	
+	public static void fillParent(Region child) {
+		final Parent parent = child.getParent();
 		
+		if (parent instanceof Region) {
+			final Region parentRegion = (Region) parent;
+			child.prefWidthProperty().bind(parentRegion.widthProperty());
+			child.prefHeightProperty().bind(parentRegion.heightProperty());
+			
+		} else {
+			throw new UnsupportedOperationException("Parent " + parent + " is not a Region.");
+		}
 	}
 }
