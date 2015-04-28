@@ -30,6 +30,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+		
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Scene.fxml"));
         final SceneController control = new SceneController(stage);
 		loader.setController(control);

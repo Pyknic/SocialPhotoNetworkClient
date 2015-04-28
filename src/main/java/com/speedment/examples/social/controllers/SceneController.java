@@ -21,6 +21,7 @@ import com.speedment.examples.social.JSONImage;
 import com.speedment.examples.social.JSONUser;
 import static com.speedment.examples.social.MainApp.PATH;
 import com.speedment.examples.social.Settings;
+import static com.speedment.examples.social.controllers.DialogController.showDialog;
 import static com.speedment.examples.social.util.Avatar.DEFAULT_AVATAR_IMG;
 import static com.speedment.examples.social.util.DropHelper.handleDrop;
 import static com.speedment.examples.social.util.DropHelper.handleOver;
@@ -78,7 +79,8 @@ public class SceneController implements Initializable {
 		this.root = root;
 		this.client = new Client(
 			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
-			Settings.inst().get("port", "8080")
+			Settings.inst().get("port", "8080"),
+			t -> showDialog(container, "Http error!", t.getMessage())
 		);
 	}
 
@@ -142,13 +144,9 @@ public class SceneController implements Initializable {
 		Settings.inst().set("mail", user.getMail());
 	}
 	
-	public void showLogin() {
-		showLogin("", "");
-	}
-	
-	public void showRegister() {
-		showRegister("", "");
-	}
+	///////////////////////////////////////////////////////////////
+	//                    Navigation methods.                    //
+	///////////////////////////////////////////////////////////////
 	
 	public void showLogin(String mail, String password) {
 		final LoginController controller = new LoginController(client);
@@ -227,13 +225,24 @@ public class SceneController implements Initializable {
 	}
 	
 	/**
+	 * Show an internal popup in this scene. It can either be a closeable popup
+	 * (like a warning message) or a non-closeable popup (like the login screen).
+	 * The popup will blur out all other components.
 	 * 
-	 * @param name
-	 * @param controller
+	 * The resulting closeHandler is a consumer of a consumer of a box. It can
+	 * be used to close the popup automatically when the user pressed a certain
+	 * button. To close the popup, call the <code>accept()</code> method in the
+	 * consumer. The input parameter should be a consumer that will be called
+	 * when the fadeOut has finished and the popup is gone. This can be empty.
+	 * 
+	 * @param name The name of the .fxml file. (ex: 'Scene.fxml').
+	 * @param controller The object that will act as controller.
+	 * @param closeable If the popup should be closeable by the user.
 	 * @return close handler.
 	 */
 	private Consumer<Consumer<VBox>> showFXMLPopup(String name, Object controller, boolean closeable) {
 		foreground.setVisible(false);
+		
 		if (!container.getChildren().contains(foreground)) {
 			container.getChildren().add(foreground);
 		}
@@ -279,29 +288,11 @@ public class SceneController implements Initializable {
 		return c -> {};
 	}
 	
-	public StackPane showImage(JSONImage img) {
-		try {
-			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Thumbnail.fxml"));
-			final ThumbnailController controller = new ThumbnailController();
-			loader.setController(controller);
-			final StackPane box = (StackPane) loader.load();
-			controller.onClick(this::showPicture);
-			controller.fromJSON(img);
-			return box;
-		} catch (IOException ex) {
-			Logger.getLogger(SceneController.class.getName()).log(
-				Level.SEVERE, "Could not find 'Thumbnail.fxml'.", ex
-			);
-		}
-		
-		return null;
-	}
-	
-	public void browseAndAppend() {
+	private void browseAndAppend() {
 		try {
 			tilepanel.getChildren().addAll(0, 
 				client.browse().stream()
-				.map(i -> showImage(i))
+				.map(i -> createThumbnailFrom(i))
 				.map(i -> {
 					i.setRotate(Math.random() * 10 - 5);
 					return i;
@@ -321,5 +312,23 @@ public class SceneController implements Initializable {
 			container.getChildren().add(p);
 			LayoutUtil.centerInParent(p);
 		}
+	}
+	
+	private StackPane createThumbnailFrom(JSONImage img) {
+		try {
+			final FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH + "/fxml/Thumbnail.fxml"));
+			final ThumbnailController controller = new ThumbnailController();
+			loader.setController(controller);
+			final StackPane box = (StackPane) loader.load();
+			controller.onClick(this::showPicture);
+			controller.fromJSON(img);
+			return box;
+		} catch (IOException ex) {
+			Logger.getLogger(SceneController.class.getName()).log(
+				Level.SEVERE, "Could not find 'Thumbnail.fxml'.", ex
+			);
+		}
+		
+		return null;
 	}
 }

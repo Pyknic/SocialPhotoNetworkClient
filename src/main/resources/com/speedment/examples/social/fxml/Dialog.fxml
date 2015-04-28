@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<StackPane fx:id="foreground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: rgba(0,0,0,0.5);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="container" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="459.0" spacing="20.0" style="-fx-background-color: #404040;">
+         <children>
+            <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" text="This is the title" textAlignment="CENTER" textFill="WHITE">
+               <effect>
+                  <DropShadow height="10.0" radius="4.5" width="10.0" />
+               </effect>
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="message" prefWidth="411.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam hendrerit vitae quam sit amet vestibulum. Nullam et purus sed tortor pretium luctus non a dui. Donec venenatis purus ut tortor feugiat, in laoreet massa suscipit. Cras ultricies mollis porta. Sed sed felis tincidunt, eleifend mauris ut, laoreet nunc." textFill="WHITE" wrapText="true">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="8.0" radius="3.5" width="8.0" />
+               </effect>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+               <children>
+                  <Button fx:id="buttonClose" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #666;" text="Okey, close this!" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <padding>
+                        <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+                     </padding>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <effect>
+            <DropShadow color="#00000080" height="20.0" offsetY="2.0" radius="9.5" width="20.0" />
+         </effect>
+         <padding>
+            <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
+         </padding>
+      </VBox>
+   </children>
+</StackPane>
