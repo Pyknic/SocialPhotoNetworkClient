@@ -17,7 +17,6 @@
 package com.speedment.examples.social.util;
 
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 /**
