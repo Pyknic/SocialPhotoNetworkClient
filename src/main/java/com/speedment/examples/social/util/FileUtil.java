@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  * @author Emil Forslund
  */
 public class FileUtil {
+	
 	public static void create(String filename, String data) {
 		try {
 			File file = new File(filename);

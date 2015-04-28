@@ -30,6 +30,7 @@ import static javafx.scene.input.TransferMode.COPY;
  * @author Emil Forslund
  */
 public class DropHelper {
+	
 	private final static List<String> ACCEPTED_EXTENSIONS = Arrays.asList(new String[] {
 		"png", "jpg", "bmp", "gif", "jpeg"
 	});

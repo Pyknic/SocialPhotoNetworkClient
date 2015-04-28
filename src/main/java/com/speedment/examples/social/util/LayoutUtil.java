@@ -24,6 +24,7 @@ import javafx.scene.layout.Region;
  * @author Emil Forslund
  */
 public class LayoutUtil {
+	
 	public static void centerInParent(Region child) {
 		final Parent parent = child.getParent();
 		

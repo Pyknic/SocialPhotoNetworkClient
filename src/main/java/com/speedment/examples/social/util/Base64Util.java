@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
  * @author Emil Forslund
  */
 public final class Base64Util {
+	
 	public static Image fromBase64(String input) {
 		final byte[] data = Base64.decode(input);
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);

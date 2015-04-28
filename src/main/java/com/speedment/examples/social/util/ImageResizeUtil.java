@@ -24,7 +24,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -35,6 +34,7 @@ import javax.imageio.ImageIO;
  * @author Emil Forslund
  */
 public final class ImageResizeUtil {
+	
 	public static String loadAndEncode(File imgFile, int maxWidth, int maxHeight) {
 		try {
 			final BufferedImage original = ImageIO.read(imgFile);
