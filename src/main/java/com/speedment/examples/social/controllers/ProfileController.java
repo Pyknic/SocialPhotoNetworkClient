@@ -35,6 +35,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -141,7 +142,10 @@ public class ProfileController implements Initializable {
 			profile.setImage(img);
 			lastFile = file;
 		} catch (FileNotFoundException ex) {
-			throw new RuntimeException("File '" + file.getName() + "' could not be found.");
+			DialogController.showDialog(
+				(Pane) container.getParent(), 
+				"Load error", "File '" + file.getName() + "' could not be found."
+			);
 		}
 	}
 }

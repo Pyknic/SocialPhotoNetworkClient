@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  *
@@ -29,11 +30,14 @@ import java.util.Optional;
  */
 public class Client implements ClientAPI {
 	private final String host;
+	private final Consumer<Throwable> catcher;
+	
 	private String sessionKey;
 	private LocalDateTime lastBrowse;
 	
-	public Client(String host) {
+	public Client(String host, Consumer<Throwable> catcher) {
 		this.host = host;
+		this.catcher = catcher;
 	}
 	
 	@Override
@@ -53,7 +57,7 @@ public class Client implements ClientAPI {
 			param("description", description),
 			param("imgdata", imgData),
 			param("sessionkey", sessionKey)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> true).orElse(false);
@@ -64,7 +68,7 @@ public class Client implements ClientAPI {
 		return post(host + "/find", params(
 			param("freetext", freeText),
 			param("sessionkey", sessionKey)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> JSONUser.parse(s))
@@ -75,7 +79,7 @@ public class Client implements ClientAPI {
 	public JSONUser self() {
 		return post(host + "/self", params(
 			param("sessionkey", sessionKey)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> JSONUser.parseOne(s))
@@ -87,7 +91,7 @@ public class Client implements ClientAPI {
 		return post(host + "/follow", params(
 			param("userid", Long.toString(userId)),
 			param("sessionkey", sessionKey)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> true).orElse(false);
@@ -101,7 +105,7 @@ public class Client implements ClientAPI {
 			param("lastname", lastname),
 			param("avatar", imgData),
 			param("sessionkey", sessionKey)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> JSONUser.parseOne(s))
@@ -114,7 +118,7 @@ public class Client implements ClientAPI {
 			param("sessionkey", sessionKey),
 			param("to", to.map(b -> b.toString()).orElse("")),
 			param("from", from.map(b -> b.toString()).orElse(""))
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> JSONImage.parseFrom(s))
@@ -141,11 +145,11 @@ public class Client implements ClientAPI {
 		return post(host + "/" + command, params(
 			param("mail", mail),
 			param("password", password)
-		))
+		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
 		.map(s -> sessionKey = s)
-		.map(s -> true).orElse(false);
+		.isPresent();
 	}
 	
 	public boolean isLoggedIn() {

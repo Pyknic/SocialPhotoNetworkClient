@@ -32,6 +32,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -134,7 +135,9 @@ public class RegisterController implements Initializable {
 	}
 	
 	public void showError(String msg) {
-		labelError.setVisible(true);
-		labelError.setText(msg);
+		DialogController.showDialog(
+			(Pane) container.getParent(), 
+			"Registration error", msg
+		);
 	}
 }

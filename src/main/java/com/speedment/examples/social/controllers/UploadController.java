@@ -34,6 +34,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -42,6 +44,7 @@ import javafx.scene.image.ImageView;
  */
 public class UploadController implements Initializable {
 	
+	@FXML private VBox container;
 	@FXML private TextField fieldTitle;
 	@FXML private ImageView fieldImage;
 	@FXML private TextArea fieldDescription;
@@ -111,6 +114,10 @@ public class UploadController implements Initializable {
 			fieldImage.setImage(img);
 			lastFile = file;
 		} catch (FileNotFoundException ex) {
+			DialogController.showDialog(
+				(Pane) container.getParent(), 
+				"Upload error", "File '" + file.getName() + "' could not be found."
+			);
 			throw new RuntimeException("File '" + file.getName() + "' could not be found.");
 		}
 	}

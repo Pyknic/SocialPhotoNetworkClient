@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class Http {
 		return Stream.of(params).collect(Collectors.joining("&"));
 	}
 
-	public static Optional<String> post(String targetURL, String params) {
+	public static Optional<String> post(String targetURL, String params, Consumer<Throwable> catcher) {
 		final URL url;
 		HttpURLConnection connection = null;
 		
@@ -70,6 +71,13 @@ public class Http {
 			connection.setUseCaches(false);
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
+
+			try {
+				connection.connect();
+			} catch (IOException ex) {
+				catcher.accept(ex);
+				return Optional.empty();
+			}
 
 			try (final DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
 				wr.writeBytes(params);
