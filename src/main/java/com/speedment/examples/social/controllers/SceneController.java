@@ -261,17 +261,23 @@ public class SceneController implements Initializable {
 				.collect(Collectors.toList())
 			);
 		} catch (IllegalArgumentException iae) {
-			StackPane p = new StackPane();
-			p.setStyle("-fx-background-color:red;");
-			p.setAlignment(Pos.CENTER);
-			Label error = new Label("404 :(");
-			error.setFont(new Font(100));
-			error.setStyle("-fx-text-fill:yellow;");
-			p.getChildren().add(error);
-			p.prefWidthProperty().bind(container.widthProperty());
-			p.prefHeightProperty().bind(container.heightProperty());
-			container.getChildren().add(p);
-			LayoutUtil.centerInParent(p);
+			
+			DialogController.showDialog(container, 
+				"Failed to browse", 
+				"This could mean that the server was gone offline or that the specified command is not yet implemented."
+			);
+			
+//			StackPane p = new StackPane();
+//			p.setStyle("-fx-background-color:red;");
+//			p.setAlignment(Pos.CENTER);
+//			Label error = new Label("404 :(");
+//			error.setFont(new Font(100));
+//			error.setStyle("-fx-text-fill:yellow;");
+//			p.getChildren().add(error);
+//			p.prefWidthProperty().bind(container.widthProperty());
+//			p.prefHeightProperty().bind(container.heightProperty());
+//			container.getChildren().add(p);
+//			LayoutUtil.centerInParent(p);
 		}
 	}
 	
