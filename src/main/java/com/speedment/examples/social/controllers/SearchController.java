@@ -79,7 +79,6 @@ public class SearchController implements Initializable {
 			if ("".equals(n)) {
 				FadeAnimation.fadeOut(scroll, e -> {
 					scroll.setVisible(false);
-					container.getChildren().add(searchingLabel);
 				});
 			} else {
 				if (!scroll.isVisible()) {
