@@ -92,7 +92,7 @@ public class JSONUser {
     }
     
     private static String mapToString(JSONObject user, String key) {
-        return Optional.ofNullable(user.get(key)).map(Object::toString).orElse(null);
+        return Optional.ofNullable(user.get(key)).map(Object::toString).orElse("");
     }
     
 }
