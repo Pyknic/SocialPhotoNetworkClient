@@ -17,7 +17,6 @@
 package com.speedment.examples.social.controllers;
 
 import static com.speedment.examples.social.MainApp.PATH;
-import com.speedment.examples.social.util.FadeAnimation;
 import static com.speedment.examples.social.util.FadeAnimation.fadeIn;
 import static com.speedment.examples.social.util.FadeAnimation.fadeOut;
 import com.speedment.examples.social.util.LayoutUtil;

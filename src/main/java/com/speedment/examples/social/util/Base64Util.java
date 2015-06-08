@@ -17,11 +17,12 @@
 package com.speedment.examples.social.util;
 
 import com.speedment.examples.social.JSONImage;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
@@ -35,11 +36,17 @@ import javax.imageio.ImageIO;
 public final class Base64Util {
 	
 	public static Image fromBase64(String input) {
-		final byte[] data = Base64.decode(input);
+		final byte[] data = Base64.getDecoder().decode(input);
 		final ByteArrayInputStream bis = new ByteArrayInputStream(data);
 
 		try {
-			return SwingFXUtils.toFXImage(ImageIO.read(bis), null);
+            final BufferedImage img = ImageIO.read(bis);
+            if (img == null) {
+                Logger.getLogger(JSONImage.class.getName()).log(Level.SEVERE, 
+                    "Failed to parse Base64-string to JavaFX-image.");
+            } else {
+                return SwingFXUtils.toFXImage(img, null);
+            }
 		} catch (IOException ex) {
 			Logger.getLogger(JSONImage.class.getName()).log(Level.SEVERE, 
 				"Failed to parse Base64-string to JavaFX-image.", ex);
@@ -50,7 +57,7 @@ public final class Base64Util {
 	
 	public static String toBase64(File file) {
 		try {
-			return Base64.encode(Files.readAllBytes(file.toPath()));
+			return Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath()));
 		} catch (IOException ex) {
 			Logger.getLogger(JSONImage.class.getName())
 				.log(Level.SEVERE, "Could not read image '" + file.getName() + "'.", ex);
