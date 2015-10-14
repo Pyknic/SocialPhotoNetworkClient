@@ -33,7 +33,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -43,7 +42,6 @@ import javafx.scene.layout.VBox;
 public class DialogController implements Initializable {
 	
 	@FXML private StackPane foreground;
-	@FXML private VBox container;
 	@FXML private Label title;
 	@FXML private Label message;
 	@FXML private Button buttonClose;

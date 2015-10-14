@@ -18,6 +18,7 @@ package com.speedment.examples.social;
 
 import static com.speedment.examples.social.Http.*;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -114,8 +115,8 @@ public class Client implements ClientAPI {
 	public List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to) {
 		return post(host + "/browse", params(
 			param("sessionkey", sessionKey),
-			param("to", to.map(b -> b.toString()).orElse("")),
-			param("from", from.map(b -> b.toString()).orElse(""))
+			param("to", to.map(b -> (b.toEpochSecond(ZoneOffset.UTC) * 1000L + b.getNano() / 1000) + "").orElse("")),
+			param("from", from.map(b -> b.toEpochSecond(ZoneOffset.UTC) + "").orElse(""))
 		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())

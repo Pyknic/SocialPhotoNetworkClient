@@ -54,7 +54,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -80,7 +79,7 @@ public class SceneController implements Initializable {
 		this.root = root;
 		this.client = new Client(
 			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
-			Settings.inst().get("port", "8080"),
+			Settings.inst().get("port", "8281"),
 			t -> showDialog(container, t.getClass().getSimpleName(), t.getMessage())
 		);
 	}

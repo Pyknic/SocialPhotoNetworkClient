@@ -19,6 +19,7 @@ package com.speedment.examples.social;
 import static com.speedment.examples.social.util.Base64Util.fromBase64;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,13 +67,20 @@ public class JSONImage implements Comparable<JSONImage> {
 		final JSONArray array = (JSONArray) container.get("images");
 		final List<JSONImage> images = new ArrayList<>();
 		
+        
+        
+        
 		array.stream().forEach(o -> {
 			final JSONObject obj = (JSONObject) o;
 			final JSONImage img = new JSONImage();
+            final long time = Long.parseLong(obj.get("uploaded").toString());
+            
+            final LocalDateTime ldt = LocalDateTime.ofEpochSecond(time / 1000L, (int) (time % 1000) * 1000, ZoneOffset.UTC);
+            
 			img.title		= obj.get("title").toString();
 			img.description = obj.get("description").toString();
-			img.uploaded	= LocalDateTime.parse(obj.get("uploaded").toString().trim().replace(" ", "T"));
-			img.uploader  = JSONUser.parse((JSONObject) obj.get("uploader"));
+			img.uploaded	= ldt;
+			img.uploader    = JSONUser.parse((JSONObject) obj.get("uploader"));
 			img.image       = fromBase64(obj.get("imgData").toString());
 			images.add(img);
 		});
