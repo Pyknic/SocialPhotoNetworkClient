@@ -66,10 +66,7 @@ public class JSONImage implements Comparable<JSONImage> {
 		final JSONObject container = (JSONObject) JSONValue.parse(json);
 		final JSONArray array = (JSONArray) container.get("images");
 		final List<JSONImage> images = new ArrayList<>();
-		
-        
-        
-        
+
 		array.stream().forEach(o -> {
 			final JSONObject obj = (JSONObject) o;
 			final JSONImage img = new JSONImage();

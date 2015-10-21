@@ -116,7 +116,7 @@ public class Client implements ClientAPI {
 		return post(host + "/browse", params(
 			param("sessionkey", sessionKey),
 			param("to", to.map(b -> (b.toEpochSecond(ZoneOffset.UTC) * 1000L + b.getNano() / 1000) + "").orElse("")),
-			param("from", from.map(b -> b.toEpochSecond(ZoneOffset.UTC) + "").orElse(""))
+			param("from", from.map(b -> (b.toEpochSecond(ZoneOffset.UTC) * 1000L + b.getNano() / 1000) + "").orElse(""))
 		), catcher)
 		.filter(s -> !s.equals("false"))
 		.filter(s -> !s.isEmpty())
