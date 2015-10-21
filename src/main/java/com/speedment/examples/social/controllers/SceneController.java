@@ -79,7 +79,8 @@ public class SceneController implements Initializable {
 		this.root = root;
 		this.client = new Client(
 			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
-			Settings.inst().get("port", "8281"),
+			Settings.inst().get("port", "8080") +
+            "/SocialNetworkEnterprise/api",
 			t -> showDialog(container, t.getClass().getSimpleName(), t.getMessage())
 		);
 	}

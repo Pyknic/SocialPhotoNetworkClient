@@ -75,7 +75,7 @@ public class Http {
 			try {
 				connection.connect();
 			} catch (IOException ex) {
-				catcher.accept(ex);
+				catcher.accept(new RuntimeException("Error connecting to '" + targetURL + "'.\nParams: '" + params + "'\n" + ex.getMessage(), ex));
 				return Optional.empty();
 			}
 
