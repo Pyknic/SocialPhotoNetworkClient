@@ -18,6 +18,8 @@ package com.speedment.examples.social.controllers;
 
 import com.speedment.examples.social.JSONImage;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -35,7 +37,6 @@ import javafx.scene.layout.VBox;
  */
 public class PictureController implements Initializable {
 	
-	@FXML private VBox container;
 	@FXML private Label title;
 	@FXML private ImageView picture;
 	@FXML private Label description;
@@ -59,12 +60,22 @@ public class PictureController implements Initializable {
 		title.setText(img.getTitle());
 		description.setText(img.getDescription());
 		picture.setImage(img.getImage());
-		meta.setText("Uploaded " + 
-			img.getUploaded().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-				.replace("T", " ") + 
-			" by " + img.getUploader().getFirstname() + 
-			" " + img.getUploader().getLastname() + "."
-		);
+        
+        final StringBuilder text = new StringBuilder("Uploaded ")
+            .append(LocalDateTime.from(img.getUploaded())
+                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+				.replace("T", " ")).append(" by ");
+        
+        if (img.getUploader().getFirstname() != null
+        &&  img.getUploader().getLastname() != null) {
+            text.append(img.getUploader().getFirstname())
+                .append(" ")
+                .append(img.getUploader().getLastname());
+        } else {
+            text.append(img.getUploader().getUsername());
+        }
+        
+        meta.setText(text.toString());
 		
 		buttonCancel.setOnAction(ev -> {
 			if (cancelListener != null) {

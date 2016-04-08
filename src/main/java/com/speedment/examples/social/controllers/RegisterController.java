@@ -43,7 +43,7 @@ import javafx.scene.layout.VBox;
 public class RegisterController implements Initializable {
 	
 	@FXML private VBox container;
-	@FXML private TextField fieldMail;
+	@FXML private TextField fieldUsername;
 	@FXML private PasswordField fieldPassword;
 	@FXML private PasswordField fieldPasswordRepeat;
 	@FXML private Button buttonCancel;
@@ -67,7 +67,7 @@ public class RegisterController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		labelError.setVisible(false);
 		
-		fieldMail.textProperty().addListener(ev -> {
+		fieldUsername.textProperty().addListener(ev -> {
 			labelError.setVisible(false);
 		});
 		
@@ -81,17 +81,19 @@ public class RegisterController implements Initializable {
 		
 		buttonRegister.setOnAction(ev -> {
 			buttonRegister.setDisable(true);
-			final String mail = fieldMail.textProperty().getValue();
+			final String username = fieldUsername.textProperty().getValue();
 			final String password = fieldPassword.textProperty().getValue();
 			final String password2 = fieldPasswordRepeat.textProperty().getValue();
 			
 			if (password.equals(password2)) {
 				if (registerListener != null) {
-					if (client.register(mail, password)) {
-						registerListener.accept(mail);
-					} else {
-						showError("Could not register with those credentials.");
-					}
+                    client.register(username, password).thenAccept(success -> {
+                        if (success) {
+                            registerListener.accept(username);
+                        } else {
+                            showError("Could not register with those credentials.");
+                        }
+                    });
 				} else {
 					throw new UnsupportedOperationException(
 						"No RegisterListener is set in RegisterController."
@@ -107,7 +109,7 @@ public class RegisterController implements Initializable {
 		buttonCancel.setOnAction(ev -> {
 			if (cancelListener != null) {
 				cancelListener.accept(
-					fieldMail.textProperty().getValue(), 
+					fieldUsername.textProperty().getValue(), 
 					fieldPassword.textProperty().getValue()
 				);
 			} else {
@@ -127,7 +129,7 @@ public class RegisterController implements Initializable {
 	}
 	
 	public void setMail(String mail) {
-		fieldMail.textProperty().setValue(mail);
+		fieldUsername.textProperty().setValue(mail);
 	}
 	
 	public void setPassword(String password) {

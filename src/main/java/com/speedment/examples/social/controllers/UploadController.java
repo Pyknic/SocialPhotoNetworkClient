@@ -17,7 +17,6 @@
 package com.speedment.examples.social.controllers;
 
 import com.speedment.examples.social.ClientAPI;
-import static com.speedment.examples.social.util.DropHelper.handleDrop;
 import static com.speedment.examples.social.util.DropHelper.handleOver;
 import com.speedment.examples.social.util.ImageResizeUtil;
 import java.io.File;
@@ -36,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import static com.speedment.examples.social.util.DropHelper.handleDrop;
 
 /**
  * FXML Controller class
@@ -75,11 +75,12 @@ public class UploadController implements Initializable {
 		buttonUpload.setOnAction(ev -> {
 			labelError.setVisible(false);
 			buttonUpload.setDisable(true);
-			onUpload.accept(client.upload(
+            
+            client.upload(
 				fieldTitle.getText(), 
 				fieldDescription.getText(),
 				ImageResizeUtil.loadAndEncode(lastFile, 256, 256)
-			));
+			).thenAccept(onUpload::accept);
 		});
 		
 		buttonCancel.setOnAction(ev -> {

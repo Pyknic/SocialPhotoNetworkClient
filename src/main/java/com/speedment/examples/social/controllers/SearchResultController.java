@@ -46,7 +46,7 @@ public class SearchResultController implements Initializable {
 	@FXML private HBox container;
 	@FXML private ImageView profileSmall;
 	@FXML private Label firstAndLastname;
-	@FXML private Label mail;
+	@FXML private Label username;
 	@FXML private Button buttonFollow;
 	
 	private final JSONUser user;
@@ -65,36 +65,38 @@ public class SearchResultController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		firstAndLastname.setText(user.getFirstname() + " " + user.getLastname());
-		mail.setText(user.getMail());
+		username.setText(user.getUsername());
 		
 		if (user.getAvatar() == null) {
 			profileSmall.setImage(DEFAULT_AVATAR_IMG);
 		} else {
-			profileSmall.setImage(user.getAvatar());
+			profileSmall.setImage(user.getAvatar().getImage());
 		}
 		
 		buttonFollow.setOnAction(ev -> {
 			buttonFollow.setDisable(true);
-			
-			if (client.follow(user.getId())) {
-				final Label success = new Label("Followed!");
-				success.setStyle("-fx-text-fill: rgb(200, 255, 160);");
-				success.setOpacity(0);
-				FadeAnimation.fadeOut(buttonFollow, e -> {
-					container.getChildren().remove(buttonFollow);
-					container.getChildren().add(success);
-					FadeAnimation.fadeIn(success);
-				});
-			} else {
-				final Label success = new Label("Already followed!");
-				success.setStyle("-fx-text-fill: rgb(255, 200, 160);");
-				success.setOpacity(0);
-				FadeAnimation.fadeOut(buttonFollow, e -> {
-					container.getChildren().remove(buttonFollow);
-					container.getChildren().add(success);
-					FadeAnimation.fadeIn(success);
-				});
-			}
+            
+            client.follow(user.getUsername()).thenAccept(success -> {
+                if (success) {
+                    final Label msg = new Label("Followed!");
+                    msg.setStyle("-fx-text-fill: rgb(200, 255, 160);");
+                    msg.setOpacity(0);
+                    FadeAnimation.fadeOut(buttonFollow, e -> {
+                        container.getChildren().remove(buttonFollow);
+                        container.getChildren().add(msg);
+                        FadeAnimation.fadeIn(msg);
+                    });
+                } else {
+                    final Label msg = new Label("Already followed!");
+                    msg.setStyle("-fx-text-fill: rgb(255, 200, 160);");
+                    msg.setOpacity(0);
+                    FadeAnimation.fadeOut(buttonFollow, e -> {
+                        container.getChildren().remove(buttonFollow);
+                        container.getChildren().add(msg);
+                        FadeAnimation.fadeIn(msg);
+                    });
+                }
+            });
 		});
 	}
 	

@@ -16,27 +16,18 @@
  */
 package com.speedment.examples.social;
 
-import static com.speedment.examples.social.util.Base64Util.fromBase64;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.speedment.examples.social.util.Base64Util;
+import java.time.Instant;
 import javafx.scene.image.Image;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 /**
  *
  * @author Emil Forslund
  */
 public class JSONImage implements Comparable<JSONImage> {
-	private String title, description;
-	private Image image;
-	private LocalDateTime uploaded;
+    
+	private String title, description, data;
+	private long uploaded;
 	private JSONUser uploader;
 	
 	private JSONImage() {}
@@ -50,45 +41,19 @@ public class JSONImage implements Comparable<JSONImage> {
 	}
 	
 	public Image getImage() {
-		return image;
+		return Base64Util.fromBase64(data);
 	}
 	
-	public LocalDateTime getUploaded() {
-		return uploaded;
+	public Instant getUploaded() {
+		return Instant.ofEpochMilli(uploaded);
 	}
 	
 	public JSONUser getUploader() {
 		return uploader;
 	}
-	
-	public static List<JSONImage> parseFrom(String json) {
-
-		final JSONObject container = (JSONObject) JSONValue.parse(json);
-		final JSONArray array = (JSONArray) container.get("images");
-		final List<JSONImage> images = new ArrayList<>();
-
-		array.stream().forEach(o -> {
-			final JSONObject obj = (JSONObject) o;
-			final JSONImage img = new JSONImage();
-            final long time = Long.parseLong(obj.get("uploaded").toString());
-            
-            final LocalDateTime ldt = LocalDateTime.ofEpochSecond(time / 1000L, (int) (time % 1000) * 1000, ZoneOffset.UTC);
-            
-			img.title		= obj.get("title").toString();
-			img.description = obj.get("description").toString();
-			img.uploaded	= ldt;
-			img.uploader    = JSONUser.parse((JSONObject) obj.get("uploader"));
-			img.image       = fromBase64(obj.get("imgData").toString());
-			images.add(img);
-		});
-		
-		Collections.sort(images, Comparator.reverseOrder());
-		
-		return images;
-	}
 
 	@Override
 	public int compareTo(JSONImage o) {
-		return (int) Duration.between(o.uploaded, uploaded).getSeconds();
+		return (int) ((o.uploaded - uploaded) / 1000);
 	}
 }

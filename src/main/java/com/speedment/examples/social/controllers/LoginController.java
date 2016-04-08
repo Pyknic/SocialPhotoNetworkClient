@@ -38,7 +38,7 @@ import javafx.scene.layout.VBox;
 public class LoginController implements Initializable {
 	
 	@FXML private VBox container;
-	@FXML private TextField fieldMail;
+	@FXML private TextField fieldUsername;
 	@FXML private PasswordField fieldPassword;
 	@FXML private Button buttonRegister;
 	@FXML private Button buttonLogin;
@@ -61,7 +61,7 @@ public class LoginController implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		labelError.setVisible(false);
 
-		fieldMail.textProperty().addListener(ev -> {
+		fieldUsername.textProperty().addListener(ev -> {
 			labelError.setVisible(false);
 		});
 		
@@ -71,15 +71,17 @@ public class LoginController implements Initializable {
 		
 		buttonLogin.setOnAction(ev -> {
 			buttonRegister.setDisable(true);
-			final String mail = fieldMail.textProperty().getValue();
+			final String mail = fieldUsername.textProperty().getValue();
 			final String password = fieldPassword.textProperty().getValue();
 			
 			if (loginListener != null) {
-				if (client.login(mail, password)) {
-					loginListener.accept(mail);
-				} else {
-					showError("Error! Wrong mail or password.");
-				}
+                client.login(mail, password).thenAccept(success -> {
+                    if (success) {
+                        loginListener.accept(mail);
+                    } else {
+                        showError("Error! Wrong mail or password.");
+                    }
+                });
 			} else {
 				throw new UnsupportedOperationException(
 					"No ShowRegisterListener is set in LoginController."
@@ -92,7 +94,7 @@ public class LoginController implements Initializable {
 		buttonRegister.setOnAction(ev -> {
 			if (showRegisterListener != null) {
 				showRegisterListener.accept(
-					fieldMail.textProperty().getValue(), 
+					fieldUsername.textProperty().getValue(), 
 					fieldPassword.textProperty().getValue()
 				);
 			} else {
@@ -112,7 +114,7 @@ public class LoginController implements Initializable {
 	}
 	
 	public void setMail(String mail) {
-		fieldMail.textProperty().setValue(mail);
+		fieldUsername.textProperty().setValue(mail);
 	}
 	
 	public void setPassword(String password) {

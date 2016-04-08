@@ -23,14 +23,12 @@ import static com.speedment.examples.social.MainApp.PATH;
 import com.speedment.examples.social.Settings;
 import static com.speedment.examples.social.controllers.DialogController.showDialog;
 import static com.speedment.examples.social.util.Avatar.DEFAULT_AVATAR_IMG;
-import static com.speedment.examples.social.util.DropHelper.handleDrop;
 import static com.speedment.examples.social.util.DropHelper.handleOver;
 import com.speedment.examples.social.util.FadeAnimation;
 import com.speedment.examples.social.util.LayoutUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -43,10 +41,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -56,6 +52,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import static com.speedment.examples.social.util.DropHelper.handleDrop;
 
 /**
  * FXML Controller class
@@ -78,9 +75,8 @@ public class SceneController implements Initializable {
 	public SceneController(Stage root) {
 		this.root = root;
 		this.client = new Client(
-			Settings.inst().get("host", "http://127.0.0.1") + ":" + 
-			Settings.inst().get("port", "8080") +
-            "/SocialNetworkEnterprise/api",
+			Settings.inst().get("host", "127.0.0.1"),
+			Integer.parseInt(Settings.inst().get("port", "8080")),
 			t -> showDialog(container, t.getClass().getSimpleName(), t.getMessage())
 		);
 	}
@@ -250,35 +246,27 @@ public class SceneController implements Initializable {
 	}
 	
 	private void browseAndAppend() {
-		try {
-			tilepanel.getChildren().addAll(0, 
-				client.browse().stream()
-				.map(i -> createThumbnailFrom(i))
-				.map(i -> {
-					i.setRotate(Math.random() * 10 - 5);
-					return i;
-				})
-				.collect(Collectors.toList())
-			);
-		} catch (IllegalArgumentException iae) {
-			
-			DialogController.showDialog(container, 
-				"Failed to browse", 
-				"This could mean that the server was gone offline or that the specified command is not yet implemented."
-			);
-			
-//			StackPane p = new StackPane();
-//			p.setStyle("-fx-background-color:red;");
-//			p.setAlignment(Pos.CENTER);
-//			Label error = new Label("404 :(");
-//			error.setFont(new Font(100));
-//			error.setStyle("-fx-text-fill:yellow;");
-//			p.getChildren().add(error);
-//			p.prefWidthProperty().bind(container.widthProperty());
-//			p.prefHeightProperty().bind(container.heightProperty());
-//			container.getChildren().add(p);
-//			LayoutUtil.centerInParent(p);
-		}
+		client.browse().thenAccept(list -> {
+            tilepanel.getChildren().addAll(0, 
+                list.stream()
+                    .map(this::createThumbnailFrom)
+                    .map(i -> {
+                        i.setRotate(Math.random() * 10 - 5);
+                        return i;
+                    })
+                    .collect(Collectors.toList())
+            );
+        }).handleAsync((v, ex) -> {
+            if (ex != null) {
+                DialogController.showDialog(container, 
+                    "Failed to browse", 
+                    "This could mean that the server was gone offline or that the " +
+                    "specified command is not yet implemented."
+                );
+            }
+
+            return v;
+        });
 	}
 	
 	private StackPane createThumbnailFrom(JSONImage img) {
@@ -321,27 +309,27 @@ public class SceneController implements Initializable {
 	}
 	
 	private void updateProfileButton() {
-		final Optional<JSONUser> user = client.self();
-		
-		if (user.isPresent()) {
-			buttonProfile.setText(
-				user.get().getFirstname() + " " + 
-				user.get().getLastname()
-			);
+		client.profile().thenAccept(profile -> {
+            if (profile.isPresent()) {
+                buttonProfile.setText(
+                    profile.get().getFirstname() + " " + 
+                    profile.get().getLastname()
+                );
 
-			final ImageView icon;
-			if (user.get().getAvatar() == null) {
-				icon = new ImageView(DEFAULT_AVATAR_IMG);
-			} else {
-				icon = new ImageView(user.get().getAvatar());
-			}
+                final ImageView icon;
+                if (profile.get().getAvatar() == null) {
+                    icon = new ImageView(DEFAULT_AVATAR_IMG);
+                } else {
+                    icon = new ImageView(profile.get().getAvatar().getImage());
+                }
 
-			icon.setFitWidth(32);
-			icon.setFitHeight(32);
-			buttonProfile.setGraphic(icon);
-			buttonProfile.setOnAction(ev -> showProfile(user.get()));
+                icon.setFitWidth(32);
+                icon.setFitHeight(32);
+                buttonProfile.setGraphic(icon);
+                buttonProfile.setOnAction(ev -> showProfile(profile.get()));
 
-			Settings.inst().set("mail", user.get().getMail());
-		}
+                Settings.inst().set("username", profile.get().getUsername());
+            }
+        });
 	}
 }

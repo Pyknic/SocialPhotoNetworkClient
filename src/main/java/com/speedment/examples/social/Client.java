@@ -16,142 +16,117 @@
  */
 package com.speedment.examples.social;
 
-import static com.speedment.examples.social.Http.*;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Comparator;
+import com.speedment.examples.social.rest.Param;
+import static com.speedment.examples.social.rest.Param.param;
+import com.speedment.examples.social.rest.Response;
+import com.speedment.examples.social.rest.Rest;
+import static com.speedment.examples.social.rest.Rest.encode;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 /**
  *
  * @author Emil Forslund
  */
 public class Client implements ClientAPI {
+    
 	private final String host;
+    private final int port;
 	private final Consumer<Throwable> catcher;
 	
-	private String sessionKey;
-	private LocalDateTime lastBrowse;
+	private long lastPicture = Long.MIN_VALUE;
+    private String username  = null;
+    private String password  = null;
 	
-	public Client(String host, Consumer<Throwable> catcher) {
+	public Client(String host, int port, Consumer<Throwable> catcher) {
 		this.host = host;
+		this.port = port;
 		this.catcher = catcher;
 	}
+    
+    private Rest rest() {
+        if (username != null && password != null) {
+            return Rest.auth(host, port, username, password);
+        } else {
+            return Rest.get(host, port);
+        }
+    }
+    
+    private Response login(String username, String password, Response response) {
+        if (response.success()) {
+            this.username = username;
+            this.password = password;
+        }
+        
+        return response;
+    }
 	
-	@Override
-	public boolean login(String mail, String password) {
-		return send("login", mail, password);
-	}
-	
-	@Override
-	public boolean register(String mail, String password) {
-		return send("register", mail, password);
-	}
-	
-	@Override
-	public boolean upload(String title, String description, String imgData) {
-		return post(host + "/upload", params(
-			param("title", title),
-			param("description", description),
-			param("imgdata", imgData),
-			param("sessionkey", sessionKey)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> true).orElse(false);
-	}
+    @Override
+    public CompletableFuture<Boolean> register(String username, String password) {
+        return rest().post(
+            "user/" + encode(username), 
+            param("password", password)
+        ).thenApply(res -> login(username, password, res))
+         .thenApply(Response::success);
+    }
 
-	@Override
-	public List<JSONUser> find(String freeText) {
-		return post(host + "/find", params(
-			param("freetext", freeText),
-			param("sessionkey", sessionKey)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parse(s))
-		.orElse(new ArrayList<>());
-	}
-	
-	@Override
-	public Optional<JSONUser> self() {
-		return post(host + "/self", params(
-			param("sessionkey", sessionKey)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parseOne(s));
-	}
+    @Override
+    public CompletableFuture<Boolean> login(String username, String password) {
+        return Rest.auth(host, port, username, password).get(
+            "user/" + encode(username)
+        ).thenApply(res -> login(username, password, res))
+         .thenApply(Response::success);
+    }
 
-	@Override
-	public boolean follow(long userId) {
-		return post(host + "/follow", params(
-			param("userid", Long.toString(userId)),
-			param("sessionkey", sessionKey)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> true).orElse(false);
-	}
-	
-	@Override
-	public Optional<JSONUser> update(String mail, String firstname, String lastname, String imgData) {
-		return post(host + "/update", params(
-			param("mail", mail),
-			param("firstname", firstname),
-			param("lastname", lastname),
-			param("avatar", imgData),
-			param("sessionkey", sessionKey)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> JSONUser.parseOne(s));
-	}
+    @Override
+    public CompletableFuture<Boolean> upload(String title, String description, String data) {
+        return rest().post("picture", 
+            param("title", title),
+            param("description", description),
+            param("data", data)
+        ).thenApply(Response::success);
+    }
 
-	@Override
-	public List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to) {
-		return post(host + "/browse", params(
-			param("sessionkey", sessionKey),
-			param("to", to.map(b -> (b.toEpochSecond(ZoneOffset.UTC) * 1000L + b.getNano() / 1000) + "").orElse("")),
-			param("from", from.map(b -> (b.toEpochSecond(ZoneOffset.UTC) * 1000L + b.getNano() / 1000) + "").orElse(""))
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> JSONImage.parseFrom(s))
-				
-		.orElseThrow(() -> 
-			new IllegalArgumentException("'browse' did not give any results. Logged in?")
-		);
-	}
-	
-	@Override
-	public List<JSONImage> browse() {
-		final List<JSONImage> result = browse(Optional.ofNullable(lastBrowse));
-		
-		lastBrowse = result.stream()
-			.sorted(Comparator.reverseOrder())
-			.findFirst()
-			.map(i -> i.getUploaded())
-			.orElse(lastBrowse);
-		
-		return result;
-	}
-	
-	private boolean send(String command, String mail, String password) {
-		return post(host + "/" + command, params(
-			param("mail", mail),
-			param("password", password)
-		), catcher)
-		.filter(s -> !s.equals("false"))
-		.filter(s -> !s.isEmpty())
-		.map(s -> sessionKey = s)
-		.isPresent();
-	}
-	
-	public boolean isLoggedIn() {
-		return sessionKey != null;
-	}
+    @Override
+    public CompletableFuture<List<JSONUser>> find(String freeText) {
+        return rest().get("picture", 
+            param("search", freeText)
+        ).thenApply(res -> res.decodeJsonArray(JSONUser[].class).collect(toList()));
+    }
+
+    @Override
+    public CompletableFuture<Optional<JSONUser>> profile() {
+        return rest().get("user/" + encode(username)
+        ).thenApply(res -> res.decodeJson(JSONUser.class));
+    }
+
+    @Override
+    public CompletableFuture<Boolean> update(String firstname, String lastname, String data) {
+        return rest().put("user/" + encode(username), 
+            param("firstname", firstname),
+            param("lastname", lastname),
+            param("data", data)
+        ).thenApply(Response::success);
+    }
+
+    @Override
+    public CompletableFuture<Boolean> follow(String usernameToFollow) {
+        return rest().post("follow/" + encode(usernameToFollow)
+        ).thenApply(Response::success);
+    }
+
+    @Override
+    public CompletableFuture<List<JSONImage>> browse(OptionalLong from, OptionalLong to) {
+        final Stream.Builder<Param> params = Stream.builder();
+        from.ifPresent(f -> params.accept(param("from", "" + f)));
+        to.ifPresent(t -> params.accept(param("to", "" + t)));
+        
+        return rest().post("picture", params.build().toArray(Param[]::new)
+        ).thenApply(res -> res.decodeJsonArray(JSONImage[].class).collect(toList()));
+    }
 }

@@ -33,7 +33,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -47,7 +46,6 @@ public class SearchController implements Initializable {
 	
 	@FXML private ScrollPane scroll;
 	@FXML private VBox container;
-	@FXML private Label searchingLabel;
 	
 	private final StringProperty input;
 	private final ClientAPI client;
@@ -86,12 +84,13 @@ public class SearchController implements Initializable {
 					scroll.setVisible(true);
 					FadeAnimation.fadeIn(scroll);
 				}
-
-				final List<JSONUser> users = client.find(n);
-				container.getChildren().clear();
-				users.forEach(u -> SearchResultController.showIn(
-					container.getChildren(), u, client
-				));
+                
+                client.find(n).thenAccept(list -> {
+                    container.getChildren().clear();
+                    list.forEach(u -> SearchResultController.showIn(
+                        container.getChildren(), u, client
+                    ));
+                });
 			}
 		});
 	}

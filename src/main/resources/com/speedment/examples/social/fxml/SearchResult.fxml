@@ -19,7 +19,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="mail" layoutX="64.0" layoutY="31.0" text="example@example.company.com" textFill="WHITE" />
+            <Label fx:id="username" layoutX="64.0" layoutY="31.0" text="example@example.company.com" textFill="WHITE" />
          </children>
       </VBox>
       <Button fx:id="buttonFollow" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: #666;" text="Follow" textFill="WHITE" />

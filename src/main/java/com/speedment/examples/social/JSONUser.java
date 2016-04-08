@@ -16,36 +16,26 @@
  */
 package com.speedment.examples.social;
 
-import static com.speedment.examples.social.util.Base64Util.fromBase64;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import javafx.scene.image.Image;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 /**
  *
  * @author Emil Forslund
  */
-public class JSONUser {
+public final class JSONUser {
 
     private long id;
-    private String mail;
+    private String username;
     private String firstname;
     private String lastname;
-    private Image avatar;
+    private JSONImage avatar;
 
-    private JSONUser() {
-    }
+    private JSONUser() {}
 
     public long getId() {
         return id;
     }
 
-    public String getMail() {
-        return mail;
+    public String getUsername() {
+        return username;
     }
 
     public String getFirstname() {
@@ -56,43 +46,7 @@ public class JSONUser {
         return lastname;
     }
 
-    public Image getAvatar() {
+    public JSONImage getAvatar() {
         return avatar;
     }
-
-    public static List<JSONUser> parse(String json) {
-        final JSONObject container = (JSONObject) JSONValue.parse(json);
-        final JSONArray array = (JSONArray) container.get("users");
-        final List<JSONUser> users = new ArrayList<>();
-
-        array.stream().forEach(u -> {
-            users.add(parse((JSONObject) u));
-        });
-
-        return users;
-    }
-
-    public static JSONUser parseOne(String json) {
-        return parse((JSONObject) JSONValue.parse(json));
-    }
-
-    public static JSONUser parse(JSONObject user) {
-        final JSONUser usr = new JSONUser();
-        usr.id = Long.parseLong(user.get("id").toString());
-        usr.mail = user.get("mail").toString();
-        usr.firstname = mapToString(user, "firstName");
-        usr.lastname = mapToString(user, "lastName");
-        usr.avatar = Optional.ofNullable(user.get("avatar"))
-                .map(Object::toString)
-                .filter(s -> !s.isEmpty())
-                .map(s -> fromBase64(s))
-                .orElse(null);
-
-        return usr;
-    }
-    
-    private static String mapToString(JSONObject user, String key) {
-        return Optional.ofNullable(user.get(key)).map(Object::toString).orElse("");
-    }
-    
 }

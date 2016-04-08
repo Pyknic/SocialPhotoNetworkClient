@@ -19,7 +19,6 @@ package com.speedment.examples.social.controllers;
 import com.speedment.examples.social.Client;
 import com.speedment.examples.social.JSONUser;
 import static com.speedment.examples.social.util.Avatar.DEFAULT_AVATAR_IMG;
-import static com.speedment.examples.social.util.DropHelper.handleDrop;
 import static com.speedment.examples.social.util.DropHelper.handleOver;
 import com.speedment.examples.social.util.ImageResizeUtil;
 import java.io.File;
@@ -38,6 +37,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import static com.speedment.examples.social.util.DropHelper.handleDrop;
 
 /**
  * FXML Controller class
@@ -50,7 +50,7 @@ public class ProfileController implements Initializable {
 	@FXML private ImageView profile;
 	@FXML private TextField fieldFirstname;
 	@FXML private TextField fieldLastname;
-	@FXML private TextField fieldMail;
+	@FXML private TextField fieldUsername;
 	@FXML private Label labelError;
 	@FXML private Button buttonCancel;
 	@FXML private Button buttonSave;
@@ -79,15 +79,16 @@ public class ProfileController implements Initializable {
 			if (user.getAvatar() == null) {
 				profile.setImage(DEFAULT_AVATAR_IMG);
 			} else {
-				profile.setImage(user.getAvatar());
+				profile.setImage(user.getAvatar().getImage());
 			}
 			
 			fieldFirstname.setText(user.getFirstname());
 			fieldLastname.setText(user.getLastname());
-			fieldMail.setText(user.getMail());
+			fieldUsername.setText(user.getUsername());
 		}
 		
 		labelError.setText("");
+        fieldUsername.setEditable(false);
 		
 		buttonCancel.setOnAction(ev -> {
 			if (cancelListener != null) {
@@ -104,20 +105,25 @@ public class ProfileController implements Initializable {
 			} else {
 				imgData = "";
 			}
-			
-			final Optional<JSONUser> usr = client.update(
-				fieldMail.getText(), 
+            
+            client.update( 
 				fieldFirstname.getText(), 
 				fieldLastname.getText(), 
 				imgData
-			);
-			
-			if (usr.isPresent() && saveListener != null) {
-				saveListener.accept(usr.get());
-			} else {
-				setError("Update was denied!");
-				buttonSave.setDisable(false);
-			}
+			).thenAccept(success -> {
+                if (saveListener != null) {
+                    saveListener.accept(user);
+                } else {
+                    throw new UnsupportedOperationException("Save listener was not set.");
+                }
+            }).handleAsync((v, ex) -> {
+                if (ex != null) {
+                    setError("Update was denied!");
+                    buttonSave.setDisable(false);
+                }
+                
+                return v;
+            });
 		});
 		
 		profile.setOnDragOver(ev -> handleOver(ev));

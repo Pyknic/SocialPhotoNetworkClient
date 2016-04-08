@@ -44,7 +44,7 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                      </padding>
                   </TextField>
-                  <TextField fx:id="fieldMail" promptText="Mail">
+                  <TextField fx:id="fieldUsername" promptText="Username">
                      <padding>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                      </padding>

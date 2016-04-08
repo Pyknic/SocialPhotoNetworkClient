@@ -24,7 +24,7 @@
             <DropShadow height="10.0" radius="4.5" width="10.0" />
          </effect>
       </Label>
-      <TextField fx:id="fieldMail" promptText="Mail">
+      <TextField fx:id="fieldUsername" promptText="Username">
          <padding>
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </padding>

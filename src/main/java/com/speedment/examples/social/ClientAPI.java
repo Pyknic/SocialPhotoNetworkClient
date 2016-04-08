@@ -16,9 +16,10 @@
  */
 package com.speedment.examples.social;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalLong;
+import java.util.concurrent.CompletableFuture;
 
 /**
  *
@@ -26,21 +27,20 @@ import java.util.Optional;
  */
 public interface ClientAPI {
 
-	boolean register(String mail, String password);
-	boolean login(String mail, String password);
-	boolean upload(String title, String description, String imgData);
-	List<JSONUser> find(String freeText);
-	Optional<JSONUser> self();
-	Optional<JSONUser> update(String mail, String firstname, String lastname, String imgData);
-	boolean follow(long userId);
-	List<JSONImage> browse(Optional<LocalDateTime> from, Optional<LocalDateTime> to);
+	CompletableFuture<Boolean> register(String username, String password);
+	CompletableFuture<Boolean> login(String username, String password);
+	CompletableFuture<Boolean> upload(String title, String description, String data);
+	CompletableFuture<List<JSONUser>> find(String freeText);
+	CompletableFuture<Optional<JSONUser>> profile();
+	CompletableFuture<Boolean> update(String firstname, String lastname, String data);
+	CompletableFuture<Boolean> follow(String usernameToFollow);
+	CompletableFuture<List<JSONImage>> browse(OptionalLong from, OptionalLong to);
 	
-	default List<JSONImage> browse(Optional<LocalDateTime> from) {
-		return browse(from, Optional.empty());
+    default CompletableFuture<List<JSONImage>> browse(OptionalLong from) {
+		return browse(from, OptionalLong.empty());
 	}
 	
-	default List<JSONImage> browse() {
-		return browse(Optional.empty(), Optional.empty());
+	default CompletableFuture<List<JSONImage>> browse() {
+		return browse(OptionalLong.empty(), OptionalLong.empty());
 	}
-	
 }
