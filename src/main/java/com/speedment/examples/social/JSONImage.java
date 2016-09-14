@@ -78,7 +78,7 @@ public class JSONImage implements Comparable<JSONImage> {
 			img.description = obj.get("description").toString();
 			img.uploaded	= ldt;
 			img.uploader    = JSONUser.parse((JSONObject) obj.get("uploader"));
-			img.image       = fromBase64(obj.get("imgData").toString());
+			img.image       = fromBase64(obj.get("img_data").toString());
 			images.add(img);
 		});
 		
